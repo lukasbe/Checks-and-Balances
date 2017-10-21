@@ -5,7 +5,7 @@ using UnityEngine;
 public class Queen : Chesspiece {
 
 	public Queen(){
-		this.weight = 0;
+		this.weight = 8;
 	}
 
 	public override int getWeight ()

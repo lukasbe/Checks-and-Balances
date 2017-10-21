@@ -12,10 +12,18 @@ public class BoardManager : MonoBehaviour {
 	public static BoardManager Instance{ set; get;}
 
 	public Chesspiece[,] Chesspieces{ set; get;}
+	private Chesspiece selectedChesspiece;
+
+	private bool[,] allowedMoves{ set; get;}
+
+	private int selectionX = -1;
+	private int selectionY = -1;
 
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
 	private List<GameObject> ActiveChessPieces = new List<GameObject>();
+
+	public bool isWhiteTurn;
 
 	private void Awake(){
 		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> (); 
@@ -26,10 +34,28 @@ public class BoardManager : MonoBehaviour {
 		BoardManager.Instance = this;
 		InstantiateChessFields ();
 		InstantiateChessPieces ();
-		//ShowBalanceFields ();
+		ShowBalanceFields ();
+		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
 	}
 
+	private void Update()
+	{
+		UpdateSelection ();
+		if (Input.GetMouseButtonDown (0)) 
+		{
+			if (selectionX >= 0 && selectionY >= 0) 
+			{
+				if (selectedChesspiece == null)
+					SelectChesspiece (selectionX, selectionY); 
+				else
+					MoveChesspiece (selectionX, selectionY);
+			}
+		}
+
+		if (selectedChesspiece != null)
+			TempMoveBalancePoint ();
+	}
 
 	public void InstantiateChessFields(){
 		for (int i = 0; i < 8; i++) {
@@ -111,5 +137,94 @@ public class BoardManager : MonoBehaviour {
 		return origin;
 	}
 
+	private void SelectChesspiece(int x, int y)
+	{
+		if (Chesspieces [x, y] == null)
+			return;
+
+		if (Chesspieces [x, y].isWhite != isWhiteTurn)
+			return;
+
+		bool hasAtLeastOneMove = false;
+		allowedMoves = Chesspieces [x, y].PossibleMove ();
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				if (allowedMoves [i, j])
+					hasAtLeastOneMove = true;
+
+		if (!hasAtLeastOneMove)
+			return;
+
+		selectedChesspiece = Chesspieces [x, y];
+		selectedChesspiece.HighlightPiece ();
+		MoveHighlights.Instance.HighlightAllowedMoves (allowedMoves);
+	}
+
+	private void UpdateSelection()
+	{
+		if (!Camera.main)
+			return;
+
+		RaycastHit hit;
+		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("ChessPlane"))) {
+			selectionX = (int)hit.point.x;
+			selectionY = (int)hit.point.z;
+		} 
+		else 
+		{
+			selectionX = -1;
+			selectionY = -1;
+		}
+	}
+
+	private void MoveChesspiece (int x, int y)
+	{
+		if (allowedMoves[x,y]) 
+		{
+			Chesspiece c = Chesspieces [x, y];
+			if (c != null && c.isWhite != isWhiteTurn) 
+			{
+				selectedChesspiece.addWeight(c.getWeight());
+				ActiveChessPieces.Remove (c.gameObject);
+				Destroy (c.gameObject);
+			}
+
+			Chesspieces [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+			selectedChesspiece.transform.position = GetTileCenter (x, y);
+			selectedChesspiece.setPosition (x, y);
+			Chesspieces [x, y] = selectedChesspiece;
+			isWhiteTurn = !isWhiteTurn;
+			//if (selectedChesspiece.GetType() == typeof(Pawn)) {
+				//if (selectedChesspiece.isWhite && y == 0)
+				//	ChangePawnToQueen (selectedChesspiece, x, y, true);
+				//if (!selectedChesspiece.isWhite && y == 7)
+				//	ChangePawnToQueen (selectedChesspiece, x, y, false);
+			//}
+		}
+		MoveHighlights.Instance.HideHighlights ();
+		selectedChesspiece.UnhighlightPiece ();
+		selectedChesspiece = null;
+	}
+
+	private void ShowBalanceFields()
+	{
+		BalanceHighlights.Instance.HighlightBalanceFields ();
+	}
+
+	private void TempMoveBalancePoint()
+	{
+		if (selectionX >= 0 && selectionX < 8 && selectionY >= 0 && selectionY < 8) {
+			//uncomment this if condition for debug purposes.
+			if (allowedMoves [selectionX, selectionY]) {
+				Chesspiece[,] tempCP = (Chesspiece[,])Chesspieces.Clone ();
+				Chesspiece cp = tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY];
+				tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+				tempCP [selectionX, selectionY] = cp;
+				balancePoint.CalculateBalancePoint (tempCP, TILE_OFFSET);
+			} else {
+				balancePoint.CalculateBalancePoint (Chesspieces, TILE_OFFSET);
+			}
+		}
+	}
 
 }

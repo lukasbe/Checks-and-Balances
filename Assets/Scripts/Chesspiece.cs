@@ -17,12 +17,10 @@ public abstract class Chesspiece : MonoBehaviour
 
 	private void Start ()
 	{
-		/*
 		rend = GetComponent<Renderer> ();
 		rend.enabled = true;
 		materials = rend.materials;
 		rend.sharedMaterial = materials [0];
-		*/
 	}
 
 	public void setPosition (int x, int y)
@@ -45,7 +43,7 @@ public abstract class Chesspiece : MonoBehaviour
 	{
 		this.weight += weight;
 	}
-	/*
+
 	public void HighlightPiece ()
 	{
 		rend.sharedMaterial = materials [1];
@@ -55,5 +53,5 @@ public abstract class Chesspiece : MonoBehaviour
 	{
 		rend.sharedMaterial = materials [0];
 	}
-	*/
+
 }

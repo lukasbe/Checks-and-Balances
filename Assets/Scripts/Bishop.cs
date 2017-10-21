@@ -7,7 +7,7 @@ public class Bishop : Chesspiece
 
 	public Bishop ()
 	{
-		this.weight = 0;
+		this.weight = 5;
 	}
 
 	public override int getWeight ()

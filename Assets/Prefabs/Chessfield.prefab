@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 64893587736097770}
   - component: {fileID: 23902786263492170}
   m_Layer: 0
-  m_Name: Chessfield
+  m_Name: ChessField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

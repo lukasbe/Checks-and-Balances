@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 689196367}
   - component: {fileID: 689196366}
   - component: {fileID: 689196365}
+  - component: {fileID: 689196369}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -257,102 +258,144 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 180, z: 0}
---- !u!1 &1515375640
+--- !u!114 &689196369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 689196364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02caee60971b2b649b158306d41c4bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &927222272
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 1515375645}
-  - component: {fileID: 1515375644}
-  - component: {fileID: 1515375643}
-  - component: {fileID: 1515375642}
-  - component: {fileID: 1515375641}
+  - component: {fileID: 927222273}
+  - component: {fileID: 927222275}
+  - component: {fileID: 927222274}
+  - component: {fileID: 927222276}
   m_Layer: 0
-  m_Name: BalancePoint
+  m_Name: ChessBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1515375641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1515375640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca5ab96b948a48f42ad74ba6d9c738ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!23 &1515375642
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1515375640}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!135 &1515375643
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1515375640}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &1515375644
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1515375640}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1515375645
+--- !u!4 &927222273
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1515375640}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 927222272}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
-  m_Children: []
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2099502086}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &927222274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 927222272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032f16b15ae6b074d9f983bd6d446507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightPrefab: {fileID: 1361963855523012, guid: 4f0eb11b2a2c92140bb4c1816594cb48,
+    type: 2}
+--- !u!114 &927222275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 927222272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e01db733ecce894bb31ea16d8327cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChessFieldPrefab: {fileID: 1033303726403204, guid: 5281a3e75c76b76478d1df21f6d2fa31,
+    type: 2}
+  ChessPiecesPrefabs:
+  - {fileID: 1918055520056056, guid: 76c21b420b562d7448ecb60ac326eb92, type: 2}
+  - {fileID: 1041987538974228, guid: 9cedb9bec61028b46b9b473d1b27eb0f, type: 2}
+  - {fileID: 1950444370001174, guid: 837cd4580474ba149be4ccf57615fb04, type: 2}
+  - {fileID: 1523758554615044, guid: 62bf822fb447f3b4a9445030b1639423, type: 2}
+  - {fileID: 1450011993507568, guid: fb7aee0410e792048adae2f8df6ceba9, type: 2}
+  - {fileID: 1030528783747924, guid: 4c937836d5508ff49a8ef9687e513be6, type: 2}
+  - {fileID: 1410454015787386, guid: 73e088c1d544d704e927aacb2e4e6fb6, type: 2}
+  - {fileID: 1616063743460926, guid: cf0bee6bfb83aef46bda94f4f8c8dc9c, type: 2}
+  - {fileID: 1324168870448168, guid: 9e2edb46edd1aeb48ac51d1158f0ce5c, type: 2}
+  - {fileID: 1101598284617126, guid: 039208fd9b6430845abaaf5efbcf0cd2, type: 2}
+  - {fileID: 1630473210429474, guid: c6630397d1cc57d4297d56185e1a5822, type: 2}
+  - {fileID: 1850560993899222, guid: c5b1ebca4f0050a4590424c08174d2f6, type: 2}
+  isWhiteTurn: 1
+--- !u!114 &927222276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 927222272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42baa1fcfc511284382c5dd6b532f7a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  balanceHighlightPrefab: {fileID: 1176470515954972, guid: 4d521ca00d7ea2a499d8609fe54b9763,
+    type: 2}
+--- !u!1001 &1565615338
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588517167535596, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c0f61661b2b22ed45815fe4bbdf3ddf4, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &2099502082
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,11 +405,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2099502086}
   - component: {fileID: 2099502085}
-  - component: {fileID: 2099502084}
   - component: {fileID: 2099502083}
-  - component: {fileID: 2099502087}
-  m_Layer: 0
-  m_Name: ChessField
+  - component: {fileID: 2099502084}
+  m_Layer: 8
+  m_Name: ChessPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -406,8 +448,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &2099502084
-MeshCollider:
+--- !u!65 &2099502084
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -416,10 +458,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &2099502085
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -433,36 +473,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2099502082}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4, y: 0, z: 4}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 927222273}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2099502087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2099502082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e01db733ecce894bb31ea16d8327cf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChessFieldPrefab: {fileID: 1033303726403204, guid: 5281a3e75c76b76478d1df21f6d2fa31,
-    type: 2}
-  ChessPiecesPrefabs:
-  - {fileID: 1918055520056056, guid: 76c21b420b562d7448ecb60ac326eb92, type: 2}
-  - {fileID: 1041987538974228, guid: 9cedb9bec61028b46b9b473d1b27eb0f, type: 2}
-  - {fileID: 1950444370001174, guid: 837cd4580474ba149be4ccf57615fb04, type: 2}
-  - {fileID: 1523758554615044, guid: 62bf822fb447f3b4a9445030b1639423, type: 2}
-  - {fileID: 1450011993507568, guid: fb7aee0410e792048adae2f8df6ceba9, type: 2}
-  - {fileID: 1030528783747924, guid: 4c937836d5508ff49a8ef9687e513be6, type: 2}
-  - {fileID: 1410454015787386, guid: 73e088c1d544d704e927aacb2e4e6fb6, type: 2}
-  - {fileID: 1616063743460926, guid: cf0bee6bfb83aef46bda94f4f8c8dc9c, type: 2}
-  - {fileID: 1324168870448168, guid: 9e2edb46edd1aeb48ac51d1158f0ce5c, type: 2}
-  - {fileID: 1101598284617126, guid: 039208fd9b6430845abaaf5efbcf0cd2, type: 2}
-  - {fileID: 1630473210429474, guid: c6630397d1cc57d4297d56185e1a5822, type: 2}
-  - {fileID: 1850560993899222, guid: c5b1ebca4f0050a4590424c08174d2f6, type: 2}

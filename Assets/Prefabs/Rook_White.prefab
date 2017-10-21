@@ -57,6 +57,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 2c746d528c6c84e4fa406553cdf09c13, type: 2}
+  - {fileID: 2100000, guid: bf67693c58e99d546a980561343aaed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a4896a83b5854d45bd6f27105e27b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWhite: 0
+  isWhite: 1
   weight: 0
   materials: []
   rend: {fileID: 0}
