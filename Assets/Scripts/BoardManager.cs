@@ -2,52 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardManager : MonoBehaviour {
+public class BoardManager : MonoBehaviour
+{
 
 	private BalancePoint balancePoint;
 
 	private const float TILE_SIZE = 1.0f;
 	private const float TILE_OFFSET = 0.5f;
 
-	public static BoardManager Instance{ set; get;}
+	public static BoardManager Instance{ set; get; }
 
-	public Chesspiece[,] Chesspieces{ set; get;}
+	public Chesspiece[,] Chesspieces{ set; get; }
+
 	private Chesspiece selectedChesspiece;
 
-	private bool[,] allowedMoves{ set; get;}
+	private bool[,] allowedMoves{ set; get; }
 
 	private int selectionX = -1;
 	private int selectionY = -1;
 
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
-	private List<GameObject> ActiveChessPieces = new List<GameObject>();
 
 	public bool isWhiteTurn;
 
-	private void Awake(){
+	private void Awake ()
+	{
 		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> (); 
 	}
 
-	private void Start()
+	private void Start ()
 	{
 		BoardManager.Instance = this;
-		InstantiateChessFields ();
+		InstantiateChessPlanes ();
 		InstantiateChessPieces ();
 		ShowBalanceFields ();
 		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
 	}
 
-	private void Update()
+	private void Update ()
 	{
 		UpdateSelection ();
-		if (Input.GetMouseButtonDown (0)) 
-		{
-			if (selectionX >= 0 && selectionY >= 0) 
-			{
+		if (Input.GetMouseButtonDown (0)) {
+			if (selectionX >= 0 && selectionY >= 0) {
 				if (selectedChesspiece == null)
-					SelectChesspiece (selectionX, selectionY); 
+					SelectChesspiece (selectionX, selectionY);
 				else
 					MoveChesspiece (selectionX, selectionY);
 			}
@@ -57,7 +57,8 @@ public class BoardManager : MonoBehaviour {
 			TempMoveBalancePoint ();
 	}
 
-	public void InstantiateChessFields(){
+	public void InstantiateChessPlanes ()
+	{
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Vector3 position = Vector3.zero;
@@ -71,7 +72,8 @@ public class BoardManager : MonoBehaviour {
 
 	}
 
-	private void InstantiateChessPieces(){
+	private void InstantiateChessPieces ()
+	{
 
 		Chesspieces = new Chesspiece[8, 8];
 
@@ -120,16 +122,15 @@ public class BoardManager : MonoBehaviour {
 			SpawnChessPieces (11, i, 1);
 	}
 
-	private void SpawnChessPieces(int index, int x, int y)
+	private void SpawnChessPieces (int index, int x, int y)
 	{
-		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter(x,y), Quaternion.Euler(-90.0f, 0.0f, 0.0f)) as GameObject;
-		go.transform.SetParent(transform);
+		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter (x, y), Quaternion.Euler (-90.0f, 0.0f, 0.0f)) as GameObject;
+		go.transform.SetParent (transform);
 		Chesspieces [x, y] = go.GetComponent<Chesspiece> ();
 		Chesspieces [x, y].setPosition (x, y);
-		ActiveChessPieces.Add (go);
 	}
 
-	private Vector3 GetTileCenter(int x, int y)
+	private Vector3 GetTileCenter (int x, int y)
 	{
 		Vector3 origin = Vector3.zero;
 		origin.x += (TILE_SIZE * x) + TILE_OFFSET;
@@ -137,7 +138,7 @@ public class BoardManager : MonoBehaviour {
 		return origin;
 	}
 
-	private void SelectChesspiece(int x, int y)
+	private void SelectChesspiece (int x, int y)
 	{
 		if (Chesspieces [x, y] == null)
 			return;
@@ -160,7 +161,7 @@ public class BoardManager : MonoBehaviour {
 		MoveHighlights.Instance.HighlightAllowedMoves (allowedMoves);
 	}
 
-	private void UpdateSelection()
+	private void UpdateSelection ()
 	{
 		if (!Camera.main)
 			return;
@@ -169,9 +170,7 @@ public class BoardManager : MonoBehaviour {
 		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("ChessPlane"))) {
 			selectionX = (int)hit.point.x;
 			selectionY = (int)hit.point.z;
-		} 
-		else 
-		{
+		} else {
 			selectionX = -1;
 			selectionY = -1;
 		}
@@ -179,13 +178,11 @@ public class BoardManager : MonoBehaviour {
 
 	private void MoveChesspiece (int x, int y)
 	{
-		if (allowedMoves[x,y]) 
-		{
+		if (allowedMoves [x, y]) {
 			Chesspiece c = Chesspieces [x, y];
-			if (c != null && c.isWhite != isWhiteTurn) 
-			{
-				selectedChesspiece.addWeight(c.getWeight());
-				ActiveChessPieces.Remove (c.gameObject);
+			if (c != null && c.isWhite != isWhiteTurn) {
+				selectedChesspiece.addWeight (c.getWeight ());
+				selectedChesspiece.Magnify (c.getWeight (), c.magnifier);
 				Destroy (c.gameObject);
 			}
 
@@ -195,10 +192,10 @@ public class BoardManager : MonoBehaviour {
 			Chesspieces [x, y] = selectedChesspiece;
 			isWhiteTurn = !isWhiteTurn;
 			//if (selectedChesspiece.GetType() == typeof(Pawn)) {
-				//if (selectedChesspiece.isWhite && y == 0)
-				//	ChangePawnToQueen (selectedChesspiece, x, y, true);
-				//if (!selectedChesspiece.isWhite && y == 7)
-				//	ChangePawnToQueen (selectedChesspiece, x, y, false);
+			//if (selectedChesspiece.isWhite && y == 0)
+			//	ChangePawnToQueen (selectedChesspiece, x, y, true);
+			//if (!selectedChesspiece.isWhite && y == 7)
+			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 		}
 		MoveHighlights.Instance.HideHighlights ();
@@ -206,24 +203,29 @@ public class BoardManager : MonoBehaviour {
 		selectedChesspiece = null;
 	}
 
-	private void ShowBalanceFields()
+	private void ShowBalanceFields ()
 	{
 		BalanceHighlights.Instance.HighlightBalanceFields ();
 	}
 
-	private void TempMoveBalancePoint()
+	private void TempMoveBalancePoint ()
 	{
 		if (selectionX >= 0 && selectionX < 8 && selectionY >= 0 && selectionY < 8) {
 			//uncomment this if condition for debug purposes.
-			if (allowedMoves [selectionX, selectionY]) {
-				Chesspiece[,] tempCP = (Chesspiece[,])Chesspieces.Clone ();
-				Chesspiece cp = tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY];
-				tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
-				tempCP [selectionX, selectionY] = cp;
+			//if (allowedMoves [selectionX, selectionY]) {
+			Chesspiece[,] tempCP = (Chesspiece[,])Chesspieces.Clone ();
+			Chesspiece cp = tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY];
+			Chesspiece other = tempCP [selectionX, selectionY];
+			tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+			tempCP [selectionX, selectionY] = cp;
+			if (other != null && other.isWhite != isWhiteTurn) {
+				balancePoint.CalculateBalancePoint (tempCP, selectionX, selectionY, cp.tempAddWeight (other.getWeight ()), TILE_OFFSET);
+			} else {	
 				balancePoint.CalculateBalancePoint (tempCP, TILE_OFFSET);
-			} else {
-				balancePoint.CalculateBalancePoint (Chesspieces, TILE_OFFSET);
 			}
+				//} else {
+			//	balancePoint.CalculateBalancePoint (Chesspieces, TILE_OFFSET);
+			//}
 		}
 	}
 

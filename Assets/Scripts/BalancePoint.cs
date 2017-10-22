@@ -23,15 +23,39 @@ public class BalancePoint : MonoBehaviour {
 					balancePoint_x += i * c.getWeight();
 					balancePoint_y += j * c.getWeight();
 				}
-				/*
-				BalanceCoin bc = BalanceCoins [i, j];
-				if (bc != null) 
+			}
+		}
+		balancePoint_x /= figureCounter;
+		balancePoint_y /= figureCounter;
+
+		balancePoint_x += TILE_OFFSET;
+		balancePoint_y += TILE_OFFSET;
+
+		MoveBalancePoint (balancePoint_x, balancePoint_y);
+	}
+
+	public void CalculateBalancePoint(Chesspiece[,] Chesspieces, int selectionX, int selectionY, float weight, float TILE_OFFSET)
+	{
+		float figureCounter = 0;
+		balancePoint_x = 0;
+		balancePoint_y = 0;
+		for (int i = 0; i < 8; i++) 
+		{
+			for (int j = 0; j < 8; j++) 
+			{
+				Chesspiece c = Chesspieces [i, j];
+				if (c != null) 
 				{
-					figureCounter += bc.weight;
-					balancePoint_x += i * bc.weight;
-					balancePoint_y += j * bc.weight;
+					if (i == selectionX && j == selectionY) {
+						figureCounter += weight;
+						balancePoint_x += i * weight;
+						balancePoint_y += j * weight;
+					} else {
+						figureCounter += c.getWeight ();
+						balancePoint_x += i * c.getWeight ();
+						balancePoint_y += j * c.getWeight ();
+					}
 				}
-				*/
 			}
 		}
 		balancePoint_x /= figureCounter;

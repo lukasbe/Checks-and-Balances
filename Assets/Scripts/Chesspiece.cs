@@ -11,6 +11,10 @@ public abstract class Chesspiece : MonoBehaviour
 
 	public bool isWhite;
 	public int weight;
+	private int hitBonus;
+
+	private float initScale;
+	public float magnifier{ set; get;}
 
 	public Material[] materials;
 	public Renderer rend;
@@ -21,6 +25,9 @@ public abstract class Chesspiece : MonoBehaviour
 		rend.enabled = true;
 		materials = rend.materials;
 		rend.sharedMaterial = materials [0];
+		hitBonus = 1;
+		initScale = 0.005f;
+		magnifier = 0;
 	}
 
 	public void setPosition (int x, int y)
@@ -39,9 +46,14 @@ public abstract class Chesspiece : MonoBehaviour
 		return -1;
 	}
 
+	public float tempAddWeight(int weight){
+		return this.weight + (weight * hitBonus);
+	}
+
 	public void addWeight (int weight)
 	{
-		this.weight += weight;
+		this.weight += weight * hitBonus;
+		hitBonus *= 2;
 	}
 
 	public void HighlightPiece ()
@@ -52,6 +64,11 @@ public abstract class Chesspiece : MonoBehaviour
 	public void UnhighlightPiece ()
 	{
 		rend.sharedMaterial = materials [0];
+	}
+
+	public void Magnify(float weight, float magnifier){
+		this.magnifier = magnifier + 1;
+		this.transform.localScale = new Vector3(initScale + this.magnifier * 0.001f, initScale + this.magnifier * 0.001f, initScale + this.magnifier * 0.001f);
 	}
 
 }
