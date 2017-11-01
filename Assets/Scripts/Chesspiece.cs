@@ -10,7 +10,7 @@ public abstract class Chesspiece : MonoBehaviour
 	public int CurrentY{ set; get; }
 
 	public bool isWhite;
-	public int weight;
+	protected int weight;
 	private int hitBonus;
 
 	private float initScale;
@@ -41,10 +41,7 @@ public abstract class Chesspiece : MonoBehaviour
 		return new bool[8, 8];
 	}
 
-	public virtual int getWeight ()
-	{
-		return -1;
-	}
+	public abstract int getWeight ();
 
 	public float tempAddWeight(int weight){
 		return this.weight + (weight * hitBonus);

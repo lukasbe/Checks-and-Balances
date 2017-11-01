@@ -7,66 +7,39 @@ public class BalancePoint : MonoBehaviour {
 	private float balancePoint_x = 4.0f;
 	private float balancePoint_y = 4.0f;
 
+	/// <summary>
+	/// Calculates the balance point.
+	/// Formula: for each line: (sum(weight(figures))) * lineindex (starting at 1) / (weight of all figures on the board)
+	/// </summary>
+	/// <param name="Chesspieces">chessboard and all the chesspieces on it</param>
+	/// <param name="TILE_OFFSET">offset to place the balance point between chess tiles</param>
 	public void CalculateBalancePoint(Chesspiece[,] Chesspieces, float TILE_OFFSET)
 	{
-		float figureCounter = 0;
-		balancePoint_x = 0;
+		balancePoint_x = 4;
 		balancePoint_y = 0;
-		for (int i = 0; i < 8; i++) 
-		{
-			for (int j = 0; j < 8; j++) 
-			{
-				Chesspiece c = Chesspieces [i, j];
-				if (c != null) 
-				{
-					figureCounter += c.getWeight();
-					balancePoint_x += i * c.getWeight();
-					balancePoint_y += j * c.getWeight();
+
+		float totalFigureWeight = 0, totalFieldWeight = 0;
+
+		for (int i = 0; i < 8; i++) {
+			float lineWeight = 0;
+			for (int j = 0; j < 8; j++) {
+				//change j and i here to get a line scan instead of a column scan
+				Chesspiece c = Chesspieces [j, i];
+				if (c != null) {
+					lineWeight += c.getWeight ();
 				}
 			}
+			totalFigureWeight += lineWeight;
+			//index + 1 to map to [1,8]
+			totalFieldWeight += lineWeight * (i + 1);
 		}
-		balancePoint_x /= figureCounter;
-		balancePoint_y /= figureCounter;
-
-		balancePoint_x += TILE_OFFSET;
+		//-1 to map back to [0,7]
+		balancePoint_y = (totalFieldWeight / totalFigureWeight) - 1;
 		balancePoint_y += TILE_OFFSET;
 
 		MoveBalancePoint (balancePoint_x, balancePoint_y);
 	}
-
-	public void CalculateBalancePoint(Chesspiece[,] Chesspieces, int selectionX, int selectionY, float weight, float TILE_OFFSET)
-	{
-		float figureCounter = 0;
-		balancePoint_x = 0;
-		balancePoint_y = 0;
-		for (int i = 0; i < 8; i++) 
-		{
-			for (int j = 0; j < 8; j++) 
-			{
-				Chesspiece c = Chesspieces [i, j];
-				if (c != null) 
-				{
-					if (i == selectionX && j == selectionY) {
-						figureCounter += weight;
-						balancePoint_x += i * weight;
-						balancePoint_y += j * weight;
-					} else {
-						figureCounter += c.getWeight ();
-						balancePoint_x += i * c.getWeight ();
-						balancePoint_y += j * c.getWeight ();
-					}
-				}
-			}
-		}
-		balancePoint_x /= figureCounter;
-		balancePoint_y /= figureCounter;
-
-		balancePoint_x += TILE_OFFSET;
-		balancePoint_y += TILE_OFFSET;
-
-		MoveBalancePoint (balancePoint_x, balancePoint_y);
-	}
-
+		
 	public Vector3 MoveBalancePoint(float x, float y)
 	{
 		transform.position = new Vector3 (x, 0, y);

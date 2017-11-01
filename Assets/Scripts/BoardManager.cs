@@ -53,8 +53,8 @@ public class BoardManager : MonoBehaviour
 			}
 		}
 
-		if (selectedChesspiece != null)
-			TempMoveBalancePoint ();
+		//if (selectedChesspiece != null)
+			//TempMoveBalancePoint ();
 	}
 
 	public void InstantiateChessPlanes ()
@@ -197,6 +197,7 @@ public class BoardManager : MonoBehaviour
 			//if (!selectedChesspiece.isWhite && y == 7)
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
+			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
@@ -208,25 +209,26 @@ public class BoardManager : MonoBehaviour
 		BalanceHighlights.Instance.HighlightBalanceFields ();
 	}
 
+	/*
 	private void TempMoveBalancePoint ()
 	{
 		if (selectionX >= 0 && selectionX < 8 && selectionY >= 0 && selectionY < 8) {
 			//uncomment this if condition for debug purposes.
-			//if (allowedMoves [selectionX, selectionY]) {
-			Chesspiece[,] tempCP = (Chesspiece[,])Chesspieces.Clone ();
-			Chesspiece cp = tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY];
-			Chesspiece other = tempCP [selectionX, selectionY];
-			tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
-			tempCP [selectionX, selectionY] = cp;
-			if (other != null && other.isWhite != isWhiteTurn) {
-				balancePoint.CalculateBalancePoint (tempCP, selectionX, selectionY, cp.tempAddWeight (other.getWeight ()), TILE_OFFSET);
-			} else {	
-				balancePoint.CalculateBalancePoint (tempCP, TILE_OFFSET);
+			if (allowedMoves [selectionX, selectionY]) {
+				Chesspiece[,] tempCP = (Chesspiece[,])Chesspieces.Clone ();
+				Chesspiece cp = tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY];
+				Chesspiece other = tempCP [selectionX, selectionY];
+				tempCP [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+				tempCP [selectionX, selectionY] = cp;
+				if (other != null && other.isWhite != isWhiteTurn) {
+					balancePoint.CalculateBalancePoint (tempCP, selectionX, selectionY, cp.tempAddWeight (other.getWeight ()), TILE_OFFSET);
+				} else {	
+					balancePoint.CalculateBalancePoint (tempCP, TILE_OFFSET);
+				}
+			} else {
+				balancePoint.CalculateBalancePoint (Chesspieces, TILE_OFFSET);
 			}
-				//} else {
-			//	balancePoint.CalculateBalancePoint (Chesspieces, TILE_OFFSET);
-			//}
 		}
 	}
-
+	*/
 }
