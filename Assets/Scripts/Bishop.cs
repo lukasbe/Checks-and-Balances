@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class Bishop : Chesspiece
 {
-
 	public Bishop ()
 	{
-		this.weight = 4;
-	}
-
-	public override int getWeight ()
-	{
-		return weight;
+		this.setWeight(4);
 	}
 
 	public override bool[,] PossibleMove ()

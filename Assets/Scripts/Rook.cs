@@ -5,12 +5,7 @@ using UnityEngine;
 public class Rook : Chesspiece {
 
 	public Rook(){
-		this.weight = 3;
-	}
-
-	public override int getWeight ()
-	{
-		return weight;
+		this.setWeight(3);
 	}
 
 	public override bool[,] PossibleMove ()

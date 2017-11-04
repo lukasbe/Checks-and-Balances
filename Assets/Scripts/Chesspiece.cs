@@ -11,6 +11,8 @@ public abstract class Chesspiece : MonoBehaviour
 
 	public bool isWhite;
 	protected int weight;
+	protected int normalizedWeight;
+	protected float height;
 	private int hitBonus;
 
 	private float initScale;
@@ -18,6 +20,12 @@ public abstract class Chesspiece : MonoBehaviour
 
 	public Material[] materials;
 	public Renderer rend;
+	public GameObject weightPrefab;
+
+	private void Awake()
+	{
+		weightPrefab = (GameObject)Resources.Load("prefabs/Weight", typeof(GameObject));
+	}
 
 	private void Start ()
 	{
@@ -28,6 +36,20 @@ public abstract class Chesspiece : MonoBehaviour
 		hitBonus = 1;
 		initScale = 0.005f;
 		magnifier = 0;
+		calculateHeight();
+		renderWeights();
+	}
+
+	private void calculateHeight()
+	{
+		this.height = this.normalizedWeight * 0.1f;
+		transform.position = new Vector3(transform.position.x, height, transform.position.z);
+	}
+
+	private void renderWeights()
+	{
+		// TODO
+		Debug.Log(this.weightPrefab);
 	}
 
 	public void setPosition (int x, int y)
@@ -41,16 +63,28 @@ public abstract class Chesspiece : MonoBehaviour
 		return new bool[8, 8];
 	}
 
-	public abstract int getWeight ();
+	public int getWeight ()
+	{
+		return this.weight;
+	}
+
+	public void setWeight (int weight)
+	{
+		this.weight = weight;
+		// Store weight without hitbonus for calculation of height
+		this.normalizedWeight = weight;
+	}
 
 	public float tempAddWeight(int weight){
 		return this.weight + (weight * hitBonus);
 	}
 
 	public void addWeight (int weight)
-	{
+	{	
+		this.normalizedWeight += weight;
 		this.weight += weight * hitBonus;
 		hitBonus *= 2;
+		calculateHeight();
 	}
 
 	public void HighlightPiece ()

@@ -5,12 +5,7 @@ using UnityEngine;
 public class Pawn : Chesspiece {
 
 	public Pawn(){
-		this.weight = 1;
-	}
-
-	public override int getWeight ()
-	{
-		return weight;
+		this.setWeight(1);
 	}
 
 	public override bool[,] PossibleMove ()
