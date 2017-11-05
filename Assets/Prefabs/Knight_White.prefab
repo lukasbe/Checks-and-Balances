@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWhite: 1
-  weight: 0
   materials: []
   rend: {fileID: 0}
+  weightPrefab: {fileID: 1050730942047054, guid: a6f78f5fda2da48a0bbf7d3a1fb54d4f,
+    type: 2}

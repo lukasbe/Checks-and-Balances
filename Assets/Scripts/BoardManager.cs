@@ -130,7 +130,7 @@ public class BoardManager : MonoBehaviour
 		Chesspieces [x, y].setPosition (x, y);
 	}
 
-	private Vector3 GetTileCenter (int x, int y)
+	public static Vector3 GetTileCenter (int x, int y)
 	{
 		Vector3 origin = Vector3.zero;
 		origin.x += (TILE_SIZE * x) + TILE_OFFSET;

@@ -23,8 +23,8 @@ public abstract class Chesspiece : MonoBehaviour
 
     private void Awake()
     {
-        weightPrefab = Resources.Load("Weight", typeof(GameObject)) as GameObject;
-        Debug.Log(weightPrefab);
+        //weightPrefab = Resources.Load("Weight", typeof(GameObject)) as GameObject;
+        //Debug.Log(weightPrefab);
     }
 
     private void Start ()
@@ -48,8 +48,12 @@ public abstract class Chesspiece : MonoBehaviour
 
 	private void renderWeights()
 	{
-		// TODO
-		// Debug.Log(this.weightPrefab);
+		for (int i = 0; i < this.normalizedWeight; i++) {
+			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
+			tileCenter.y = i * weightPrefab.transform.localScale.y;
+			GameObject go = Instantiate (weightPrefab, tileCenter, Quaternion.Euler (0.0f, 0.0f, 0.0f)) as GameObject;
+			go.transform.SetParent (transform);
+		}
 	}
 
 	public void setPosition (int x, int y)
