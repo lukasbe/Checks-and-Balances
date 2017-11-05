@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Pawn : Chesspiece {
 
-	public Pawn(){
+	public Pawn()
+	{
 		this.setWeight(1);
 	}
 

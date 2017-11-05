@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Knight : Chesspiece {
 
-	public Knight(){
+	public Knight()
+	{
 		this.setWeight(2);
 	}
 

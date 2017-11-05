@@ -6,7 +6,6 @@ public abstract class Chesspiece : MonoBehaviour
 {
 
 	public int CurrentX{ set; get; }
-
 	public int CurrentY{ set; get; }
 
 	public bool isWhite;
@@ -20,14 +19,15 @@ public abstract class Chesspiece : MonoBehaviour
 
 	public Material[] materials;
 	public Renderer rend;
-	public GameObject weightPrefab;
+    public GameObject weightPrefab;
 
-	private void Awake()
-	{
-		weightPrefab = (GameObject)Resources.Load("prefabs/Weight", typeof(GameObject));
-	}
+    private void Awake()
+    {
+        weightPrefab = Resources.Load("Weight", typeof(GameObject)) as GameObject;
+        Debug.Log(weightPrefab);
+    }
 
-	private void Start ()
+    private void Start ()
 	{
 		rend = GetComponent<Renderer> ();
 		rend.enabled = true;
@@ -49,7 +49,7 @@ public abstract class Chesspiece : MonoBehaviour
 	private void renderWeights()
 	{
 		// TODO
-		Debug.Log(this.weightPrefab);
+		// Debug.Log(this.weightPrefab);
 	}
 
 	public void setPosition (int x, int y)
