@@ -14,18 +14,9 @@ public abstract class Chesspiece : MonoBehaviour
 	protected float height;
 	private int hitBonus;
 
-	private float initScale;
-	public float magnifier{ set; get;}
-
 	public Material[] materials;
 	public Renderer rend;
     public GameObject weightPrefab;
-
-    private void Awake()
-    {
-        //weightPrefab = Resources.Load("Weight", typeof(GameObject)) as GameObject;
-        //Debug.Log(weightPrefab);
-    }
 
     private void Start ()
 	{
@@ -34,15 +25,13 @@ public abstract class Chesspiece : MonoBehaviour
 		materials = rend.materials;
 		rend.sharedMaterial = materials [0];
 		hitBonus = 1;
-		initScale = 0.005f;
-		magnifier = 0;
 		calculateHeight();
 		renderWeights();
 	}
 
 	private void calculateHeight()
 	{
-		this.height = this.normalizedWeight * 0.1f;
+		this.height = this.normalizedWeight * weightPrefab.transform.localScale.y;
 		transform.position = new Vector3(transform.position.x, height, transform.position.z);
 	}
 
@@ -101,9 +90,13 @@ public abstract class Chesspiece : MonoBehaviour
 		rend.sharedMaterial = materials [0];
 	}
 
-	public void Magnify(float weight, float magnifier){
-		this.magnifier = magnifier + 1;
-		this.transform.localScale = new Vector3(initScale + this.magnifier * 0.001f, initScale + this.magnifier * 0.001f, initScale + this.magnifier * 0.001f);
+	/// <summary>
+	/// Gets the tile center. this method differs from BoardManager.GetTileCenter() because it takes the weights' height into account.
+	/// </summary>
+	public Vector3 GetTileCenter(int x, int y){
+		Vector3 tc = BoardManager.GetTileCenter (x, y);
+		tc.y = height;
+		return tc;
 	}
 
 }

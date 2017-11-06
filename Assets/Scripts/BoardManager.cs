@@ -182,12 +182,11 @@ public class BoardManager : MonoBehaviour
 			Chesspiece c = Chesspieces [x, y];
 			if (c != null && c.isWhite != isWhiteTurn) {
 				selectedChesspiece.addWeight (c.getWeight ());
-				selectedChesspiece.Magnify (c.getWeight (), c.magnifier);
 				Destroy (c.gameObject);
 			}
 
 			Chesspieces [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
-			selectedChesspiece.transform.position = GetTileCenter (x, y);
+			selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter (x, y);
 			selectedChesspiece.setPosition (x, y);
 			Chesspieces [x, y] = selectedChesspiece;
 			isWhiteTurn = !isWhiteTurn;
