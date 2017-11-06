@@ -48,6 +48,13 @@ public abstract class Chesspiece : MonoBehaviour
 
 	private void renderWeights()
 	{
+        // Remove all current Weights
+
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
 		for (int i = 0; i < this.normalizedWeight; i++) {
 			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
 			tileCenter.y = i * weightPrefab.transform.localScale.y;
@@ -89,6 +96,7 @@ public abstract class Chesspiece : MonoBehaviour
 		this.weight += weight * hitBonus;
 		hitBonus *= 2;
 		calculateHeight();
+        renderWeights();
 	}
 
 	public void HighlightPiece ()
