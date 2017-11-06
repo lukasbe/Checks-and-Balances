@@ -31,15 +31,29 @@ public abstract class Chesspiece : MonoBehaviour
 
 	private void calculateHeight()
 	{
-		this.height = this.normalizedWeight * weightPrefab.transform.localScale.y;
+//		this.height = this.normalizedWeight * weightPrefab.transform.localScale.y;
+        // Limit weight rendering to 10
+        // Mathf because Math does not exist in unity
+        int numberOfWeights = (int)Mathf.Min(this.normalizedWeight, 10);
+        this.height = numberOfWeights * weightPrefab.transform.localScale.y;
 		transform.position = new Vector3(transform.position.x, height, transform.position.z);
 	}
 
 	private void renderWeights()
 	{
-		for (int i = 0; i < this.normalizedWeight; i++) {
+        // Remove all current Weight
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        // Limit weight rendering to 10
+        // Mathf because Math does not exist in unity
+        int numberOfWeights = (int)Mathf.Min(this.normalizedWeight, 10);
+
+        for (int i = 0; i < numberOfWeights; i++) {
 			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
-			tileCenter.y = i * weightPrefab.transform.localScale.y;
+			tileCenter.y += i * weightPrefab.transform.localScale.y;
 			GameObject go = Instantiate (weightPrefab, tileCenter, Quaternion.Euler (0.0f, 0.0f, 0.0f)) as GameObject;
 			go.transform.SetParent (transform);
 		}
@@ -49,6 +63,8 @@ public abstract class Chesspiece : MonoBehaviour
 	{
 		CurrentX = x;
 		CurrentY = y;
+        calculateHeight();
+        renderWeights();
 	}
 
 	public virtual bool[,] PossibleMove ()
@@ -78,6 +94,7 @@ public abstract class Chesspiece : MonoBehaviour
 		this.weight += weight * hitBonus;
 		hitBonus *= 2;
 		calculateHeight();
+        renderWeights();
 	}
 
 	public void HighlightPiece ()
