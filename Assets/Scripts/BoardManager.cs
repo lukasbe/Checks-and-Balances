@@ -24,6 +24,10 @@ public class BoardManager : MonoBehaviour
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
 
+	public GameObject chessboardWatchHand;
+
+	public Camera[] cams;
+
 	public bool isWhiteTurn;
 
 	private void Awake ()
@@ -33,6 +37,8 @@ public class BoardManager : MonoBehaviour
 
 	private void Start ()
 	{
+		cams [0].enabled = true;
+		cams [1].enabled = false;
 		BoardManager.Instance = this;
 		InstantiateChessPlanes ();
 		InstantiateChessPieces ();
@@ -197,6 +203,8 @@ public class BoardManager : MonoBehaviour
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
+			ShowActionCam ();
+			StartCoroutine ("ShowGameCamWait");
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
@@ -206,6 +214,26 @@ public class BoardManager : MonoBehaviour
 	private void ShowBalanceFields ()
 	{
 		BalanceHighlights.Instance.HighlightBalanceFields ();
+	}
+
+	private void ShowActionCam(){
+		cams[0].enabled = false;
+		cams[1].enabled = true;
+	}
+
+	private void ShowGameCam(){
+		cams[0].enabled = true;
+		cams[1].enabled = false;
+	}
+
+	private IEnumerator ShowGameCamWait(){
+		float relPos = balancePoint.transform.position.z;
+		relPos -= 4;
+		relPos = (relPos + 1) / 2;
+		float rotAngle = Mathf.Lerp (-20.0f, 20.0f, relPos);
+		chessboardWatchHand.transform.Rotate (rotAngle, 0, 0);
+		yield return new WaitForSeconds (2);
+		ShowGameCam ();
 	}
 
 	/*
