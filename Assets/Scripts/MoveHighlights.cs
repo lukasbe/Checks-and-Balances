@@ -22,9 +22,9 @@ public class MoveHighlights : MonoBehaviour {
 		if (go == null) 
 		{
 			go = Instantiate (highlightPrefab);
+			go.transform.SetParent (BoardManager.Instance.transform);
 			highlights.Add (go);
 		}
-
 		return go;
 	}
 
@@ -38,7 +38,7 @@ public class MoveHighlights : MonoBehaviour {
 				{
 					GameObject go = GetHighlightObject ();
 					go.SetActive (true);
-					go.transform.position = new Vector3 (i + TILE_OFFSET, -0.0808f, j + TILE_OFFSET);
+					go.transform.position = new Vector3 (i + TILE_OFFSET, 0, j + TILE_OFFSET);
 				}
 			}
 		}
@@ -51,4 +51,5 @@ public class MoveHighlights : MonoBehaviour {
 			go.SetActive (false);
 		}
 	}
+		
 }

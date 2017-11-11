@@ -204,7 +204,7 @@ public class BoardManager : MonoBehaviour
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
 			ShowActionCam ();
-			StartCoroutine ("ShowGameCamWait");
+			StartCoroutine ("MoveWatchHand");
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
@@ -226,7 +226,7 @@ public class BoardManager : MonoBehaviour
 		cams[1].enabled = false;
 	}
 
-	private IEnumerator ShowGameCamWait(){
+	private IEnumerator MoveWatchHand(){
 		float relPos = balancePoint.transform.position.z;
 		relPos -= 4;
 		relPos = (relPos + 1) / 2;

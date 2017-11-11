@@ -18,6 +18,7 @@ public abstract class Chesspiece : MonoBehaviour
 	public Renderer rend;
     public GameObject weightPrefab;
 
+
     private void Start ()
 	{
 		rend = GetComponent<Renderer> ();

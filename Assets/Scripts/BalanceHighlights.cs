@@ -23,9 +23,9 @@ public class BalanceHighlights : MonoBehaviour {
 		if (go == null) 
 		{
 			go = Instantiate (balanceHighlightPrefab);
+			go.transform.SetParent (BoardManager.Instance.transform);
 			balanceHighlights.Add (go);
 		}
-
 		return go;
 	}
 
