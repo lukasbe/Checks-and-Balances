@@ -231,7 +231,7 @@ public class BoardManager : MonoBehaviour
 		relPos -= 4;
 		relPos = (relPos + 1) / 2;
 		float rotAngle = Mathf.Lerp (-20.0f, 20.0f, relPos);
-		chessboardWatchHand.transform.Rotate (rotAngle, 0, 0);
+		chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 + rotAngle,0,0);
 		yield return new WaitForSeconds (2);
 		ShowGameCam ();
 	}
