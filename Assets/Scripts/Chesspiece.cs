@@ -34,8 +34,7 @@ public abstract class Chesspiece : MonoBehaviour
 //		this.height = this.normalizedWeight * weightPrefab.transform.localScale.y;
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
-        int numberOfWeights = (int)Mathf.Min(this.normalizedWeight, 10);
-        this.height = numberOfWeights * weightPrefab.transform.localScale.y;
+		this.height = (this.normalizedWeight * weightPrefab.transform.localScale.z * 2) - weightPrefab.transform.localScale.z;
 		transform.position = new Vector3(transform.position.x, height, transform.position.z);
 	}
 
@@ -49,12 +48,11 @@ public abstract class Chesspiece : MonoBehaviour
 
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
-        int numberOfWeights = (int)Mathf.Min(this.normalizedWeight, 10);
 
-        for (int i = 0; i < numberOfWeights; i++) {
+		for (int i = 0; i < this.normalizedWeight; i++) {
 			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
-			tileCenter.y += i * weightPrefab.transform.localScale.y;
-			GameObject go = Instantiate (weightPrefab, tileCenter, Quaternion.Euler (0.0f, 0.0f, 0.0f)) as GameObject;
+			tileCenter.y += i * (weightPrefab.transform.localScale.z * 2);
+			GameObject go = Instantiate (weightPrefab, tileCenter, Quaternion.Euler (90.0f, 0.0f, 0.0f)) as GameObject;
 			go.transform.SetParent (transform);
 		}
 	}

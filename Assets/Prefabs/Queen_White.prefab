@@ -98,5 +98,5 @@ MonoBehaviour:
   isWhite: 1
   materials: []
   rend: {fileID: 0}
-  weightPrefab: {fileID: 1050730942047054, guid: a6f78f5fda2da48a0bbf7d3a1fb54d4f,
+  weightPrefab: {fileID: 1097401573636196, guid: dc78ea41fbaebc446a60699c54ed4f68,
     type: 2}

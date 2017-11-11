@@ -18,6 +18,8 @@ ModelImporter:
     100020: Queen_White
     100022: Rook_Black
     100024: Rook_White
+    100026: Weight_Black
+    100028: Weight_White
     400000: Bishop_Black
     400002: Bishop_White
     400004: //RootNode
@@ -31,6 +33,8 @@ ModelImporter:
     400020: Queen_White
     400022: Rook_Black
     400024: Rook_White
+    400026: Weight_Black
+    400028: Weight_White
     2300000: Bishop_Black
     2300002: Bishop_White
     2300004: King_Black
@@ -43,6 +47,8 @@ ModelImporter:
     2300018: Queen_White
     2300020: Rook_Black
     2300022: Rook_White
+    2300024: Weight_Black
+    2300026: Weight_White
     3300000: Bishop_Black
     3300002: Bishop_White
     3300004: King_Black
@@ -55,6 +61,8 @@ ModelImporter:
     3300018: Queen_White
     3300020: Rook_Black
     3300022: Rook_White
+    3300024: Weight_Black
+    3300026: Weight_White
     4300000: Pawn_White
     4300002: Queen_Black
     4300004: Bishop_White
@@ -67,24 +75,36 @@ ModelImporter:
     4300018: Queen_White
     4300020: King_White
     4300022: Pawn_Black
+    4300024: Weight_Black
+    4300026: Weight_White
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: WeightBlack
+    second: {fileID: 2100000, guid: da40e8824276e224785f838a899e7db1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WeightWhite
+    second: {fileID: 2100000, guid: cf04abc0e8508f644b3b628570509536, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: _Black
-    second: {fileID: 2100000, guid: 15886af6acb67bc4f9b835243bdbbcc6, type: 2}
+    second: {fileID: 2100000, guid: 2269a2f9d0a594eda822e10a95a1b7b7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: _Black_0
-    second: {fileID: 2100000, guid: f4c4823f4bf45c54ea85017b310337e4, type: 2}
+    second: {fileID: 2100000, guid: eabe93ee778074372972e8a12b16554e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: w
-    second: {fileID: 2100000, guid: e60588eb13d4ec349a22edea6868a50b, type: 2}
+    second: {fileID: 2100000, guid: daef42c95880b4edda596001998a461e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
