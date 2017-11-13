@@ -18,6 +18,8 @@ public class BoardManager : MonoBehaviour
 
 	private bool[,] allowedMoves{ set; get; }
 
+	public float currentRotAngle{ get; set;}
+
 	private int selectionX = -1;
 	private int selectionY = -1;
 
@@ -133,7 +135,7 @@ public class BoardManager : MonoBehaviour
 		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter (x, y), Quaternion.Euler (-90.0f, 0.0f, 0.0f)) as GameObject;
 		go.transform.SetParent (transform);
 		Chesspieces [x, y] = go.GetComponent<Chesspiece> ();
-		Chesspieces [x, y].setPosition (x, y);
+		Chesspieces [x, y].SetPosition (x, y);
 	}
 
 	public static Vector3 GetTileCenter (int x, int y)
@@ -187,13 +189,17 @@ public class BoardManager : MonoBehaviour
 		if (allowedMoves [x, y]) {
 			Chesspiece c = Chesspieces [x, y];
 			if (c != null && c.isWhite != isWhiteTurn) {
-				selectedChesspiece.addWeight (c.getWeight ());
+				selectedChesspiece.AddWeight (c.GetWeight ());
 				Destroy (c.gameObject);
 			}
 
 			Chesspieces [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+			//
+			resetRotationToStart();
 			selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter (x, y);
-			selectedChesspiece.setPosition (x, y);
+			redoRotation ();
+			//
+			selectedChesspiece.SetPosition (x, y);
 			Chesspieces [x, y] = selectedChesspiece;
 			isWhiteTurn = !isWhiteTurn;
 			//if (selectedChesspiece.GetType() == typeof(Pawn)) {
@@ -226,12 +232,20 @@ public class BoardManager : MonoBehaviour
 		cams[1].enabled = false;
 	}
 
+	public void resetRotationToStart(){
+		chessboardWatchHand.transform.rotation = Quaternion.Euler (-90.0f, 0.0f, 0.0f);
+	}
+
+	public void redoRotation(){
+		chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 + currentRotAngle,0,0);
+	}
+
 	private IEnumerator MoveWatchHand(){
 		float relPos = balancePoint.transform.position.z;
 		relPos -= 4;
 		relPos = (relPos + 1) / 2;
-		float rotAngle = Mathf.Lerp (-20.0f, 20.0f, relPos);
-		chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 + rotAngle,0,0);
+		currentRotAngle = Mathf.Lerp (-20.0f, 20.0f, relPos);
+		chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 + currentRotAngle,0,0);
 		yield return new WaitForSeconds (2);
 		ShowGameCam ();
 	}

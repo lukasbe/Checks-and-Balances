@@ -18,7 +18,6 @@ public abstract class Chesspiece : MonoBehaviour
 	public Renderer rend;
     public GameObject weightPrefab;
 
-
     private void Start ()
 	{
 		rend = GetComponent<Renderer> ();
@@ -26,44 +25,55 @@ public abstract class Chesspiece : MonoBehaviour
 		materials = rend.materials;
 		rend.sharedMaterial = materials [0];
 		hitBonus = 1;
-		calculateHeight();
-		renderWeights();
+		CalculateHeight();
+		RenderWeights();
 	}
 
-	private void calculateHeight()
+	private void CalculateHeight()
 	{
 //		this.height = this.normalizedWeight * weightPrefab.transform.localScale.y;
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
+
+		BoardManager.Instance.resetRotationToStart ();
+
 		this.height = (this.normalizedWeight * weightPrefab.transform.localScale.z * 2) - weightPrefab.transform.localScale.z;
 		transform.position = new Vector3(transform.position.x, height, transform.position.z);
+
+		BoardManager.Instance.redoRotation ();
 	}
 
-	private void renderWeights()
+	private void RenderWeights()
 	{
+		
         // Remove all current Weight
-        foreach (Transform child in transform)
+		foreach (Transform child in transform)
         {
-            GameObject.Destroy(child.gameObject);
+			GameObject.Destroy (child.gameObject);
         }
 
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
 
+		BoardManager.Instance.resetRotationToStart ();
+
 		for (int i = 0; i < this.normalizedWeight; i++) {
 			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
 			tileCenter.y += i * (weightPrefab.transform.localScale.z * 2);
-			GameObject go = Instantiate (weightPrefab, tileCenter, Quaternion.Euler (90.0f, 0.0f, 0.0f)) as GameObject;
-			go.transform.SetParent (transform);
+			GameObject go = Instantiate (weightPrefab, tileCenter, transform.rotation) as GameObject;
+			go.transform.parent = transform;
+			go.transform.localRotation = Quaternion.Euler (0.0f, 0.0f, 0.0f);
 		}
+
+		BoardManager.Instance.redoRotation ();
 	}
 
-	public void setPosition (int x, int y)
+	public void SetPosition (int x, int y)
 	{
 		CurrentX = x;
 		CurrentY = y;
-        calculateHeight();
-        renderWeights();
+        CalculateHeight();
+        RenderWeights();
 	}
 
 	public virtual bool[,] PossibleMove ()
@@ -71,29 +81,29 @@ public abstract class Chesspiece : MonoBehaviour
 		return new bool[8, 8];
 	}
 
-	public int getWeight ()
+	public int GetWeight ()
 	{
 		return this.weight;
 	}
 
-	public void setWeight (int weight)
+	public void SetWeight (int weight)
 	{
 		this.weight = weight;
 		// Store weight without hitbonus for calculation of height
 		this.normalizedWeight = weight;
 	}
 
-	public float tempAddWeight(int weight){
+	public float TempAddWeight(int weight){
 		return this.weight + (weight * hitBonus);
 	}
 
-	public void addWeight (int weight)
+	public void AddWeight (int weight)
 	{	
 		this.normalizedWeight += weight;
 		this.weight += weight * hitBonus;
 		hitBonus *= 2;
-		calculateHeight();
-        renderWeights();
+		CalculateHeight();
+        RenderWeights();
 	}
 
 	public void HighlightPiece ()

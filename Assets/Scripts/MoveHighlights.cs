@@ -30,6 +30,7 @@ public class MoveHighlights : MonoBehaviour {
 
 	public void HighlightAllowedMoves(bool[,] moves)
 	{
+		BoardManager.Instance.resetRotationToStart ();
 		for (int i = 0; i < 8; i++) 
 		{
 			for (int j = 0; j < 8; j++) 
@@ -38,10 +39,11 @@ public class MoveHighlights : MonoBehaviour {
 				{
 					GameObject go = GetHighlightObject ();
 					go.SetActive (true);
-					go.transform.position = new Vector3 (i + TILE_OFFSET, 0, j + TILE_OFFSET);
+					go.transform.position = new Vector3 (i + TILE_OFFSET, -0.08f, j + TILE_OFFSET);
 				}
 			}
 		}
+		BoardManager.Instance.redoRotation ();
 	}
 
 	public void HideHighlights()

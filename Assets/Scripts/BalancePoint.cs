@@ -26,7 +26,7 @@ public class BalancePoint : MonoBehaviour {
 				//change j and i here to get a line scan instead of a column scan
 				Chesspiece c = Chesspieces [j, i];
 				if (c != null) {
-					lineWeight += c.getWeight ();
+					lineWeight += c.GetWeight ();
 				}
 			}
 			totalFigureWeight += lineWeight;

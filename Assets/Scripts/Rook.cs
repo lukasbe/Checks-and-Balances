@@ -6,7 +6,7 @@ public class Rook : Chesspiece {
 
 	public Rook()
 	{
-		this.setWeight(3);
+		this.SetWeight(3);
 	}
 
 	public override bool[,] PossibleMove ()
