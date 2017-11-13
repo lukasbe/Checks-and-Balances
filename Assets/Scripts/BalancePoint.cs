@@ -46,10 +46,16 @@ public class BalancePoint : MonoBehaviour {
 		return transform.position;
 	}
 
-	public void initBalancePointPosition()
+	public void InitBalancePointPosition()
 	{
 		MoveBalancePoint (balancePoint_x, balancePoint_y);
 	}
 
+	public bool WithinBoarders(){
+		return balancePoint_x >= 3 &&
+		balancePoint_x <= 5 &&
+		balancePoint_y >= 3 &&
+		balancePoint_y <= 5;
+	}
 
 }

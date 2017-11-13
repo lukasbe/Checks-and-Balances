@@ -125,4 +125,9 @@ public abstract class Chesspiece : MonoBehaviour
 		return tc;
 	}
 
+	public void AddGravity(){
+		transform.gameObject.AddComponent<BoxCollider> ();
+		transform.gameObject.AddComponent<Rigidbody> ();
+	}
+
 }

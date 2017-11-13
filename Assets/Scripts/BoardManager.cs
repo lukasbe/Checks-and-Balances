@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
 
-	private BalancePoint balancePoint;
+	public BalancePoint balancePoint;
 
 	private const float TILE_SIZE = 1.0f;
 	private const float TILE_OFFSET = 0.5f;
@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour
 	private int selectionX = -1;
 	private int selectionY = -1;
 
-	public GameObject ChessFieldPrefab;
+	//public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
 
 	public GameObject chessboardWatchHand;
@@ -42,11 +42,11 @@ public class BoardManager : MonoBehaviour
 		cams [0].enabled = true;
 		cams [1].enabled = false;
 		BoardManager.Instance = this;
-		InstantiateChessPlanes ();
+//		InstantiateChessPlanes ();
 		InstantiateChessPieces ();
 		ShowBalanceFields ();
 		isWhiteTurn = true;
-		balancePoint.initBalancePointPosition ();
+		balancePoint.InitBalancePointPosition ();
 	}
 
 	private void Update ()
@@ -65,6 +65,7 @@ public class BoardManager : MonoBehaviour
 			//TempMoveBalancePoint ();
 	}
 
+	/*
 	public void InstantiateChessPlanes ()
 	{
 		for (int i = 0; i < 8; i++) {
@@ -79,7 +80,7 @@ public class BoardManager : MonoBehaviour
 		}
 
 	}
-
+*/
 	private void InstantiateChessPieces ()
 	{
 
@@ -209,8 +210,18 @@ public class BoardManager : MonoBehaviour
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-			ShowActionCam ();
-			StartCoroutine ("MoveWatchHand");
+			if (balancePoint.WithinBoarders ()) {
+				ShowActionCam ();
+				StartCoroutine ("MoveWatchHand");
+			} else {
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						Chesspiece tmp = Chesspieces[i,j];
+						if (tmp != null)
+							tmp.AddGravity ();
+					}
+				}
+			}
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
