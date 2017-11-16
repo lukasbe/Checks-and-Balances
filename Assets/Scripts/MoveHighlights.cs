@@ -22,7 +22,7 @@ public class MoveHighlights : MonoBehaviour {
 		if (go == null) 
 		{
 			go = Instantiate (highlightPrefab);
-			go.transform.SetParent (BoardManager.Instance.transform);
+			go.transform.SetParent (BoardManager.Instance.chessboard.transform);
 			highlights.Add (go);
 		}
 		return go;

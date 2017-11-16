@@ -28,6 +28,8 @@ public class BoardManager : MonoBehaviour
 
 	public GameObject chessboardWatchHand;
 
+	public GameObject chessboard;
+
 	public Camera[] cams;
 
 	public bool isWhiteTurn;
@@ -42,9 +44,10 @@ public class BoardManager : MonoBehaviour
 		cams [0].enabled = true;
 		cams [1].enabled = false;
 		BoardManager.Instance = this;
-		InstantiateChessPlanes ();
+		chessboard = transform.GetChild (1).gameObject;
+		//InstantiateChessPlanes ();
 		InstantiateChessPieces ();
-		ShowBalanceFields ();
+		//ShowBalanceFields ();
 		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
 	}
@@ -133,7 +136,7 @@ public class BoardManager : MonoBehaviour
 	private void SpawnChessPieces (int index, int x, int y)
 	{
 		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter (x, y), Quaternion.Euler (-90.0f, 0.0f, 0.0f)) as GameObject;
-		go.transform.SetParent (transform);
+		go.transform.SetParent (chessboard.transform);
 		Chesspieces [x, y] = go.GetComponent<Chesspiece> ();
 		Chesspieces [x, y].SetPosition (x, y);
 	}
@@ -198,7 +201,7 @@ public class BoardManager : MonoBehaviour
 			resetRotationToStart();
 			selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter (x, y);
 			redoRotation ();
-			//
+
 			selectedChesspiece.SetPosition (x, y);
 			Chesspieces [x, y] = selectedChesspiece;
 			isWhiteTurn = !isWhiteTurn;
@@ -219,7 +222,7 @@ public class BoardManager : MonoBehaviour
 
 	private void ShowBalanceFields ()
 	{
-		BalanceHighlights.Instance.HighlightBalanceFields ();
+		//BalanceHighlights.Instance.HighlightBalanceFields ();
 	}
 
 	private void ShowActionCam(){
@@ -244,8 +247,14 @@ public class BoardManager : MonoBehaviour
 		float relPos = balancePoint.transform.position.z;
 		relPos -= 4;
 		relPos = (relPos + 1) / 2;
-		currentRotAngle = Mathf.Lerp (-20.0f, 20.0f, relPos);
-		chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 + currentRotAngle,0,0);
+		currentRotAngle = Mathf.Lerp (-45.0f, 45.0f, relPos);
+		float targetPosition = Mathf.Lerp (-100f, 100f, relPos);
+		//chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 - currentRotAngle,0,0);
+		chessboard.transform.Rotate (+currentRotAngle, 0, 0);
+		HingeJoint hinge = chessboard.GetComponent<HingeJoint> ();
+		JointSpring js = hinge.spring;
+		js.targetPosition = -targetPosition;
+		hinge.spring = js;
 		yield return new WaitForSeconds (2);
 		ShowGameCam ();
 	}

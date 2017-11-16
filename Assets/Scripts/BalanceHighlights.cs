@@ -17,17 +17,19 @@ public class BalanceHighlights : MonoBehaviour {
 		balanceHighlights = new List<GameObject> ();
 	}
 
+
 	private GameObject GetHighlightObject()
 	{
 		GameObject go = balanceHighlights.Find (g => !g.activeSelf);
 		if (go == null) 
 		{
 			go = Instantiate (balanceHighlightPrefab);
-			go.transform.SetParent (BoardManager.Instance.transform);
+			go.transform.SetParent (BoardManager.Instance.chessboard.transform);
 			balanceHighlights.Add (go);
 		}
 		return go;
 	}
+
 
 	public void HighlightBalanceFields(){
 		for (int i = 0; i < 8; i++) 
