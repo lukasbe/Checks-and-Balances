@@ -35,12 +35,8 @@ public abstract class Chesspiece : MonoBehaviour
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
 
-		BoardManager.Instance.resetRotationToStart ();
-
 		this.height = (this.normalizedWeight * weightPrefab.transform.localScale.z * 2) - weightPrefab.transform.localScale.z;
 		transform.position = new Vector3(transform.position.x, height, transform.position.z);
-
-		BoardManager.Instance.redoRotation ();
 	}
 
 	private void RenderWeights()
@@ -55,17 +51,16 @@ public abstract class Chesspiece : MonoBehaviour
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
 
-		BoardManager.Instance.resetRotationToStart ();
 
 		for (int i = 0; i < this.normalizedWeight; i++) {
 			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
 			tileCenter.y += i * (weightPrefab.transform.localScale.z * 2);
-			GameObject go = Instantiate (weightPrefab, tileCenter, transform.rotation) as GameObject;
-			go.transform.parent = transform;
-			go.transform.localRotation = Quaternion.Euler (0.0f, 0.0f, 0.0f);
+			GameObject go = Instantiate (weightPrefab) as GameObject;
+			go.transform.position = tileCenter;
+			go.transform.up = MoveHighlights.moveHighlights [CurrentX, CurrentY].transform.up;
+			go.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+			go.transform.SetParent (transform);
 		}
-
-		BoardManager.Instance.redoRotation ();
 	}
 
 	public void SetPosition (int x, int y)

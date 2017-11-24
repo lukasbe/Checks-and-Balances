@@ -29,6 +29,7 @@ public class BoardManager : MonoBehaviour
 	public GameObject chessboardWatchHand;
 
 	public GameObject chessboard;
+	private Rigidbody rb;
 
 	public Camera[] cams;
 
@@ -36,20 +37,19 @@ public class BoardManager : MonoBehaviour
 
 	private void Awake ()
 	{
-		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> (); 
+		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> ();
+		BoardManager.Instance = this;
+		chessboard = transform.GetChild (1).gameObject;
 	}
 
 	private void Start ()
 	{
 		cams [0].enabled = true;
 		cams [1].enabled = false;
-		BoardManager.Instance = this;
-		chessboard = transform.GetChild (1).gameObject;
-		//InstantiateChessPlanes ();
 		InstantiateChessPieces ();
-		//ShowBalanceFields ();
 		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
+		rb = GetComponent<Rigidbody> ();
 	}
 
 	private void Update ()
@@ -135,7 +135,7 @@ public class BoardManager : MonoBehaviour
 
 	private void SpawnChessPieces (int index, int x, int y)
 	{
-		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter (x, y), Quaternion.Euler (-90.0f, 0.0f, 0.0f)) as GameObject;
+		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter(x,y), Quaternion.Euler (-90.0f, 0.0f, 0.0f)) as GameObject;
 		go.transform.SetParent (chessboard.transform);
 		Chesspieces [x, y] = go.GetComponent<Chesspiece> ();
 		Chesspieces [x, y].SetPosition (x, y);
@@ -178,12 +178,15 @@ public class BoardManager : MonoBehaviour
 			return;
 
 		RaycastHit hit;
-		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("ChessPlane"))) {
-			selectionX = (int)hit.point.x;
-			selectionY = (int)hit.point.z;
-		} else {
-			selectionX = -1;
-			selectionY = -1;
+		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("MoveHighlight"))) {
+			//Debug.Log ("Mouse: (" + hit.point.x + ", " + hit.point.y + ", " + hit.point.z + ")");
+			GameObject selectedmoveHighlight = hit.collider.gameObject;
+			MoveHighlights.Instance.GetSelectionIndex (selectedmoveHighlight, out selectionX, out selectionY);
+			//selectionX = (int)hit.point.x;
+			//selectionY = (int)hit.point.z;
+		//} else {
+			//selectionX = -1;
+			//selectionY = -1;
 		}
 	}
 
@@ -197,11 +200,7 @@ public class BoardManager : MonoBehaviour
 			}
 
 			Chesspieces [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
-			//
-			resetRotationToStart();
 			selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter (x, y);
-			redoRotation ();
-
 			selectedChesspiece.SetPosition (x, y);
 			Chesspieces [x, y] = selectedChesspiece;
 			isWhiteTurn = !isWhiteTurn;
@@ -235,28 +234,25 @@ public class BoardManager : MonoBehaviour
 		cams[1].enabled = false;
 	}
 
-	public void resetRotationToStart(){
-		chessboardWatchHand.transform.rotation = Quaternion.Euler (-90.0f, 0.0f, 0.0f);
-	}
-
-	public void redoRotation(){
-		chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 + currentRotAngle,0,0);
-	}
-
 	private IEnumerator MoveWatchHand(){
-		float relPos = balancePoint.transform.position.z;
-		relPos -= 4;
-		relPos = (relPos + 1) / 2;
-		currentRotAngle = Mathf.Lerp (-45.0f, 45.0f, relPos);
-		float targetPosition = Mathf.Lerp (-100f, 100f, relPos);
-		//chessboardWatchHand.transform.rotation = Quaternion.Euler(-90 - currentRotAngle,0,0);
-		chessboard.transform.Rotate (+currentRotAngle, 0, 0);
-		HingeJoint hinge = chessboard.GetComponent<HingeJoint> ();
-		JointSpring js = hinge.spring;
-		js.targetPosition = -targetPosition;
-		hinge.spring = js;
+
+		float balance = rb.worldCenterOfMass.z;
+		float springPos = Map (3.0f, 5.0f, -200.0f, 200.0f, balance);
+		HingeJoint joint = GetComponent<HingeJoint> ();
+		JointSpring spring = joint.spring;
+		spring.targetPosition = springPos;
+
+
 		yield return new WaitForSeconds (2);
 		ShowGameCam ();
+	}
+
+	private float Map(float oldMin, float oldMax, float newMin, float newMax, float value){
+		float oldRange = (oldMax - oldMin);
+		float newRange = (newMax - newMin);
+		float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
+
+		return newValue ;
 	}
 
 	/*

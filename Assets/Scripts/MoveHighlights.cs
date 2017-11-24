@@ -7,50 +7,62 @@ public class MoveHighlights : MonoBehaviour {
 	public static MoveHighlights Instance{ set; get;}
 
 	public GameObject highlightPrefab;
-	private List<GameObject> highlights;
+	public static GameObject[,] moveHighlights{ get; set;}
 	private const float TILE_OFFSET = 0.5f;
 
 	private void Start()
 	{
 		Instance = this;
-		highlights = new List<GameObject> ();
+		moveHighlights = new GameObject[8, 8];
+		InitMoveHighlights ();
 	}
 
-	private GameObject GetHighlightObject()
-	{
-		GameObject go = highlights.Find (g => !g.activeSelf);
-		if (go == null) 
-		{
-			go = Instantiate (highlightPrefab);
-			go.transform.SetParent (BoardManager.Instance.chessboard.transform);
-			highlights.Add (go);
+	private void InitMoveHighlights(){
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j < 8; j++){
+				GameObject go = GameObject.Instantiate (highlightPrefab) as GameObject;
+				go.transform.position = new Vector3 (i + TILE_OFFSET, -0.08f, j + TILE_OFFSET);
+				go.transform.SetParent (BoardManager.Instance.chessboard.transform);
+
+				go.GetComponent<Renderer> ().enabled = false;
+				moveHighlights [i, j] = go;
+			}
 		}
-		return go;
 	}
 
 	public void HighlightAllowedMoves(bool[,] moves)
 	{
-		BoardManager.Instance.resetRotationToStart ();
 		for (int i = 0; i < 8; i++) 
 		{
 			for (int j = 0; j < 8; j++) 
 			{
 				if (moves [i, j]) 
 				{
-					GameObject go = GetHighlightObject ();
-					go.SetActive (true);
-					go.transform.position = new Vector3 (i + TILE_OFFSET, -0.08f, j + TILE_OFFSET);
+					GameObject go = moveHighlights[i,j];
+					go.GetComponent<Renderer> ().enabled = true;
 				}
 			}
 		}
-		BoardManager.Instance.redoRotation ();
 	}
 
 	public void HideHighlights()
 	{
-		foreach(GameObject go in highlights)
+		foreach(GameObject go in moveHighlights)
 		{
-			go.SetActive (false);
+			go.GetComponent<Renderer> ().enabled = false;
+		}
+	}
+
+	public void GetSelectionIndex(GameObject go, out int xPos, out int yPos){
+		xPos = -1;
+		yPos = -1;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (moveHighlights [i, j] == go) {
+					xPos = i;
+					yPos = j;
+				}
+			}
 		}
 	}
 		
