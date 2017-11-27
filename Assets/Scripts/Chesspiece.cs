@@ -32,8 +32,9 @@ public abstract class Chesspiece : MonoBehaviour
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
 
-		this.height = (this.weight * weightPrefab.transform.localScale.z * 2) - weightPrefab.transform.localScale.z;
-		transform.position = new Vector3(transform.position.x, height, transform.position.z);
+        Vector3 tileCenter = MoveHighlights.Instance.GetTileCenter(CurrentX, CurrentY);
+        tileCenter.y += this.weight * (weightPrefab.transform.localScale.z * 2);
+        transform.position = tileCenter;
 	}
 
 	private void RenderWeights()
