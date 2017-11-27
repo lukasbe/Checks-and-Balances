@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 522492661}
   m_Layer: 0
   m_Name: MoveCam
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
