@@ -10,9 +10,7 @@ public abstract class Chesspiece : MonoBehaviour
 
 	public bool isWhite;
 	protected int weight;
-	protected int normalizedWeight;
 	protected float height;
-	private int hitBonus;
 
 	public Material[] materials;
 	public Renderer rend;
@@ -24,7 +22,6 @@ public abstract class Chesspiece : MonoBehaviour
 		rend.enabled = true;
 		materials = rend.materials;
 		rend.sharedMaterial = materials [0];
-		hitBonus = 1;
 		CalculateHeight();
 		RenderWeights();
 	}
@@ -35,7 +32,7 @@ public abstract class Chesspiece : MonoBehaviour
         // Limit weight rendering to 10
         // Mathf because Math does not exist in unity
 
-		this.height = (this.normalizedWeight * weightPrefab.transform.localScale.z * 2) - weightPrefab.transform.localScale.z;
+		this.height = (this.weight * weightPrefab.transform.localScale.z * 2) - weightPrefab.transform.localScale.z;
 		transform.position = new Vector3(transform.position.x, height, transform.position.z);
 	}
 
@@ -52,13 +49,14 @@ public abstract class Chesspiece : MonoBehaviour
         // Mathf because Math does not exist in unity
 
 
-		for (int i = 0; i < this.normalizedWeight; i++) {
-			Vector3 tileCenter = BoardManager.GetTileCenter (CurrentX, CurrentY);
+		for (int i = 0; i < this.weight; i++) {
+			Vector3 tileCenter = MoveHighlights.Instance.GetTileCenter (CurrentX, CurrentY);
+			tileCenter.y += weightPrefab.transform.localScale.z;
 			tileCenter.y += i * (weightPrefab.transform.localScale.z * 2);
 			GameObject go = Instantiate (weightPrefab) as GameObject;
 			go.transform.position = tileCenter;
-			go.transform.up = MoveHighlights.moveHighlights [CurrentX, CurrentY].transform.up;
-			go.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+			//go.transform.up = MoveHighlights.moveHighlights [CurrentX, CurrentY].transform.up;
+			//go.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
 			go.transform.SetParent (transform);
 		}
 	}
@@ -84,19 +82,11 @@ public abstract class Chesspiece : MonoBehaviour
 	public void SetWeight (int weight)
 	{
 		this.weight = weight;
-		// Store weight without hitbonus for calculation of height
-		this.normalizedWeight = weight;
-	}
-
-	public float TempAddWeight(int weight){
-		return this.weight + (weight * hitBonus);
 	}
 
 	public void AddWeight (int weight)
 	{	
-		this.normalizedWeight += weight;
-		this.weight += weight * hitBonus;
-		hitBonus *= 2;
+		this.weight += weight;
 		CalculateHeight();
         RenderWeights();
 	}
@@ -115,8 +105,7 @@ public abstract class Chesspiece : MonoBehaviour
 	/// Gets the tile center. this method differs from BoardManager.GetTileCenter() because it takes the weights' height into account.
 	/// </summary>
 	public Vector3 GetTileCenter(int x, int y){
-		Vector3 tc = BoardManager.GetTileCenter (x, y);
-		tc.y = height;
+		Vector3 tc = MoveHighlights.Instance.GetTileCenter (x, y);
 		return tc;
 	}
 

@@ -65,5 +65,9 @@ public class MoveHighlights : MonoBehaviour {
 			}
 		}
 	}
+
+	public Vector3 GetTileCenter(int x, int y){
+		return moveHighlights [x, y].GetComponent<Renderer> ().bounds.center;
+	}
 		
 }
