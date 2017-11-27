@@ -23,6 +23,9 @@ public class BoardManager : MonoBehaviour
 	private int selectionX = -1;
 	private int selectionY = -1;
 
+    private int numberOfMoves = 0;
+    private int fastCamSwitchThreshold = 10;
+
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
 
@@ -46,6 +49,7 @@ public class BoardManager : MonoBehaviour
 	{
 		cams [0].enabled = true;
 		cams [1].enabled = false;
+        cams [2].enabled = false;
 		InstantiateChessPieces ();
 		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
@@ -211,12 +215,22 @@ public class BoardManager : MonoBehaviour
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-			ShowActionCam ();
+			
+            if (numberOfMoves < fastCamSwitchThreshold)
+            {
+                MoveGameCam();
+            }
+            else
+            {
+                ShowActionCam();
+            }
+
 			StartCoroutine ("MoveWatchHand");
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
 		selectedChesspiece = null;
+        numberOfMoves += 1;
 	}
 
 	private void ShowBalanceFields ()
@@ -227,12 +241,21 @@ public class BoardManager : MonoBehaviour
 	private void ShowActionCam(){
 		cams[0].enabled = false;
 		cams[1].enabled = true;
+        cams[2].enabled = false;
 	}
 
 	private void ShowGameCam(){
 		cams[0].enabled = true;
 		cams[1].enabled = false;
 	}
+
+    private void MoveGameCam()
+    {
+        cams[0].enabled = false;
+        cams[1].enabled = false;
+        cams[2].enabled = true;
+        cams[2].GetComponent<MoveCamera>().moveToTarget();
+    }
 
 	private IEnumerator MoveWatchHand(){
 
@@ -243,7 +266,15 @@ public class BoardManager : MonoBehaviour
 		spring.targetPosition = springPos;
 
 
-		yield return new WaitForSeconds (2);
+        if (numberOfMoves < fastCamSwitchThreshold)
+        {
+            yield return new WaitForSeconds(4);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2);
+        }
+
 		ShowGameCam ();
 	}
 
