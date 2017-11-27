@@ -9,22 +9,46 @@ ModelImporter:
     100002: //RootNode
     100004: Plane05
     100006: Untitled
+    100008: Chessboard
+    100010: Cylinder
+    100012: Cylinder_001
+    100014: Cylinder_002
+    100016: Cylinder_003
     400000: 0
     400002: //RootNode
     400004: Plane05
     400006: Untitled
+    400008: Chessboard
+    400010: Cylinder
+    400012: Cylinder_001
+    400014: Cylinder_002
+    400016: Cylinder_003
     2300000: 0
     2300002: Plane05
     2300004: Untitled
     2300006: //RootNode
+    2300008: Chessboard
+    2300010: Cylinder
+    2300012: Cylinder_001
+    2300014: Cylinder_002
+    2300016: Cylinder_003
     3300000: 0
     3300002: Plane05
     3300004: Untitled
     3300006: //RootNode
+    3300008: Chessboard
+    3300010: Cylinder
+    3300012: Cylinder_001
+    3300014: Cylinder_002
+    3300016: Cylinder_003
     4300000: Plane05
     4300002: 0
     4300004: Untitled
     4300006: Chessboard
+    4300008: Cylinder
+    4300010: Cylinder_001
+    4300012: Cylinder_003
+    4300014: Cylinder_002
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
@@ -38,6 +62,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Material__194
     second: {fileID: 2100000, guid: 07c35b2816f1d334698b611ced25d911, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: unnamed
+    second: {fileID: 2100000, guid: 3f183a3cc25673143a3b4abeee9c8c20, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

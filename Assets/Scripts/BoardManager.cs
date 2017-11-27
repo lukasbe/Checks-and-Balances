@@ -52,7 +52,7 @@ public class BoardManager : MonoBehaviour
 		rb = GetComponent<Rigidbody> ();
 	}
 
-	private void Update ()
+	private void FixedUpdate ()
 	{
 		UpdateSelection ();
 		if (Input.GetMouseButtonDown (0)) {

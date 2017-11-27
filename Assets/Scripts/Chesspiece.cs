@@ -56,8 +56,8 @@ public abstract class Chesspiece : MonoBehaviour
 			tileCenter.y += i * (weightPrefab.transform.localScale.z * 2);
 			GameObject go = Instantiate (weightPrefab) as GameObject;
 			go.transform.position = tileCenter;
-			//go.transform.up = MoveHighlights.moveHighlights [CurrentX, CurrentY].transform.up;
-			//go.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+			go.transform.up = MoveHighlights.moveHighlights [CurrentX, CurrentY].transform.up;
+			go.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
 			go.transform.SetParent (transform);
 		}
 	}
