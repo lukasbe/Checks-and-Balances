@@ -7,6 +7,10 @@ public class BalancePoint : MonoBehaviour {
 	private float balancePoint_x = 4.0f;
 	private float balancePoint_y = 4.0f;
 
+	public void Start(){
+		GetComponent<Renderer> ().enabled = false;
+	}
+
 	/// <summary>
 	/// Calculates the balance point.
 	/// Formula: for each line: (sum(weight(figures))) * lineindex (starting at 1) / (weight of all figures on the board)
