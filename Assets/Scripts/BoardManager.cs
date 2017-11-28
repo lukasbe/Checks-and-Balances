@@ -40,6 +40,7 @@ public class BoardManager : MonoBehaviour
 		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> ();
 		BoardManager.Instance = this;
 		chessboard = transform.GetChild (1).gameObject;
+		rb = GetComponent<Rigidbody> ();
 	}
 
 	private void Start ()
@@ -49,7 +50,6 @@ public class BoardManager : MonoBehaviour
 		InstantiateChessPieces ();
 		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
-		rb = GetComponent<Rigidbody> ();
 	}
 
 	private void FixedUpdate ()
@@ -237,11 +237,7 @@ public class BoardManager : MonoBehaviour
 	private IEnumerator MoveWatchHand(){
 
 		float balance = rb.worldCenterOfMass.z;
-		float springPos = Map (3.0f, 5.0f, -200.0f, 200.0f, balance);
-		HingeJoint joint = GetComponent<HingeJoint> ();
-		JointSpring spring = joint.spring;
-		spring.targetPosition = springPos;
-
+		setSpringPos (balance);
 
 		yield return new WaitForSeconds (2);
 		ShowGameCam ();
@@ -253,6 +249,22 @@ public class BoardManager : MonoBehaviour
 		float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
 
 		return newValue ;
+	}
+
+	public void resetRotationToStart(){
+		chessboardWatchHand.transform.rotation = Quaternion.Euler (-90.0f, 0.0f, 0.0f);
+	}
+
+	public void redoRotation(){
+		float balance = rb.worldCenterOfMass.z;
+		setSpringPos (balance);
+	}
+
+	private void setSpringPos(float angle){
+		float springPos = Map (3.0f, 5.0f, -200.0f, 200.0f, angle);
+		HingeJoint joint = GetComponent<HingeJoint> ();
+		JointSpring spring = joint.spring;
+		spring.targetPosition = springPos;
 	}
 
 	/*
