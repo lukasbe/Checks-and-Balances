@@ -35,7 +35,7 @@ public abstract class Chesspiece : MonoBehaviour
 		float height = (weightPrefab.transform.localScale.z * 2) * this.weight;
 		Vector3 target = tileCenter + (up * height);
 		Vector3 endTarget = target + (up * weightPrefab.transform.localScale.z);
-		Vector3 end = Vector3.MoveTowards (target, endTarget, 1.0f);
+		//Vector3 end = Vector3.MoveTowards (target, endTarget, 1.0f);
 
 		transform.position = target;
 		Quaternion localRot = transform.localRotation;
@@ -46,21 +46,20 @@ public abstract class Chesspiece : MonoBehaviour
 
 	private void RenderWeights ()
 	{
-		
-        // Remove all current Weight
-		foreach (Transform child in transform)
-        {
-			GameObject.Destroy (child.gameObject);
-        }
 
-		//upo vector
+		// Remove all current Weight
+		foreach (Transform child in transform)
+		{
+			GameObject.Destroy (child.gameObject);
+		}
+
+		//up vector
 		Vector3 up = MoveHighlights.moveHighlights [CurrentX, CurrentY].transform.up;
 
 		//start vectors
 		Vector3 tileCenter = GetTileCenter (CurrentX, CurrentY);
 		Vector3 startTarget = tileCenter + (up * weightPrefab.transform.localScale.z);
 		Vector3 start = Vector3.MoveTowards (tileCenter, startTarget, 1.0f);
-
 
 		float height = (weightPrefab.transform.localScale.z * 2) * this.weight;
 		Vector3 target = tileCenter + (up * height);
