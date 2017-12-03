@@ -52,8 +52,7 @@ public class BoardManager : MonoBehaviour
 		balancePoint.initBalancePointPosition ();
 	}
 
-	private void FixedUpdate ()
-	{
+	private void Update(){
 		UpdateSelection ();
 		if (Input.GetMouseButtonDown (0)) {
 			if (selectionX >= 0 && selectionY >= 0) {
@@ -63,9 +62,6 @@ public class BoardManager : MonoBehaviour
 					MoveChesspiece (selectionX, selectionY);
 			}
 		}
-
-		//if (selectedChesspiece != null)
-			//TempMoveBalancePoint ();
 	}
 
 	public void InstantiateChessPlanes ()
