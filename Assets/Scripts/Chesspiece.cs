@@ -34,8 +34,6 @@ public abstract class Chesspiece : MonoBehaviour
 
 		float height = (weightPrefab.transform.localScale.z * 2) * this.weight;
 		Vector3 target = tileCenter + (up * height);
-		Vector3 endTarget = target + (up * weightPrefab.transform.localScale.z);
-		//Vector3 end = Vector3.MoveTowards (target, endTarget, 1.0f);
 
 		transform.position = target;
 		Quaternion localRot = transform.localRotation;
