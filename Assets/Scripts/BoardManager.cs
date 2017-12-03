@@ -257,14 +257,15 @@ public class BoardManager : MonoBehaviour
 
 	public void redoRotation(){
 		float balance = rb.worldCenterOfMass.z;
-		setSpringPos (balance);
+		//setSpringPos (balance);
 	}
 
 	private void setSpringPos(float angle){
-		float springPos = Map (3.0f, 5.0f, -200.0f, 200.0f, angle);
+		float springPos = Map (3.0f, 5.0f, -80.0f, 80.0f, angle);
 		HingeJoint joint = GetComponent<HingeJoint> ();
 		JointSpring spring = joint.spring;
 		spring.targetPosition = springPos;
+		//joint.spring = spring;
 	}
 
 	/*
