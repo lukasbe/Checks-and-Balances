@@ -1,55 +1,40 @@
 fileFormatVersion: 2
-guid: 4f4aaa21b49e80449af246552d0a89db
-timeCreated: 1509989509
+guid: 5bd2d19a08d07cf469f355de995fbb0a
+timeCreated: 1512330638
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Torus_000
-    100004: Torus_001
+    100002: Cube
+    100004: Cube_002
     100006: Plane
-    100008: Cube
-    100010: Cube_002
-    100012: Cube_001
-    100014: Torus
-    100016: Torus_002
+    100008: Torus
     400000: //RootNode
-    400002: Torus_000
-    400004: Torus_001
+    400002: Cube
+    400004: Cube_002
     400006: Plane
-    400008: Cube
-    400010: Cube_002
-    400012: Cube_001
-    400014: Torus
-    400016: Torus_002
-    2300000: Torus_000
-    2300002: Torus_001
+    400008: Torus
+    2300000: Cube
+    2300002: Cube_002
     2300004: Plane
-    2300006: Cube
-    2300008: Cube_002
-    2300010: Cube_001
-    2300012: Torus
-    2300014: Torus_002
-    3300000: Torus_000
-    3300002: Torus_001
+    2300006: Torus
+    3300000: Cube
+    3300002: Cube_002
     3300004: Plane
-    3300006: Cube
-    3300008: Cube_002
-    3300010: Cube_001
-    3300012: Torus
-    3300014: Torus_002
-    4300000: Torus_001
-    4300002: Torus_000
+    3300006: Torus
+    4300000: Torus
+    4300002: Cube
     4300004: Plane
-    4300006: Cube
-    4300008: Cube_002
-    4300010: Cube_001
-    4300012: Torus
-    4300014: Torus_002
+    4300006: Cube_002
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Texture
+    second: {fileID: 2100000, guid: f1760459dbb002b4388081296f9f5dc0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
