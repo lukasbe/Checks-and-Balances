@@ -1,0 +1,222 @@
+fileFormatVersion: 2
+guid: 083f10bc5b3af6f4d903571639dbacb4
+timeCreated: 1512412709
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Box6359
+    100002: //RootNode
+    100004: obj_23
+    100006: obj_24
+    100008: obj_25
+    100010: obj_26
+    100012: obj_27
+    100014: obj_28
+    100016: obj_29
+    100018: obj_30
+    100020: obj_31
+    100022: obj_32
+    100024: obj_33
+    100026: obj_34
+    100028: obj_35
+    100030: obj_36
+    100032: obj_37
+    100034: obj_38
+    100036: Rectangle0
+    100038: Rectangle1
+    100040: Rectangle2
+    100042: Rectangle3
+    100044: Rectangle4
+    100046: Rectangle5
+    100048: Rectangle6
+    400000: Box6359
+    400002: //RootNode
+    400004: obj_23
+    400006: obj_24
+    400008: obj_25
+    400010: obj_26
+    400012: obj_27
+    400014: obj_28
+    400016: obj_29
+    400018: obj_30
+    400020: obj_31
+    400022: obj_32
+    400024: obj_33
+    400026: obj_34
+    400028: obj_35
+    400030: obj_36
+    400032: obj_37
+    400034: obj_38
+    400036: Rectangle0
+    400038: Rectangle1
+    400040: Rectangle2
+    400042: Rectangle3
+    400044: Rectangle4
+    400046: Rectangle5
+    400048: Rectangle6
+    2300000: Box6359
+    2300002: obj_23
+    2300004: obj_24
+    2300006: obj_25
+    2300008: obj_26
+    2300010: obj_27
+    2300012: obj_28
+    2300014: obj_29
+    2300016: obj_30
+    2300018: obj_31
+    2300020: obj_32
+    2300022: obj_33
+    2300024: obj_34
+    2300026: obj_35
+    2300028: obj_36
+    2300030: obj_37
+    2300032: obj_38
+    2300034: Rectangle0
+    2300036: Rectangle1
+    2300038: Rectangle2
+    2300040: Rectangle3
+    2300042: Rectangle4
+    2300044: Rectangle5
+    2300046: Rectangle6
+    3300000: Box6359
+    3300002: obj_23
+    3300004: obj_24
+    3300006: obj_25
+    3300008: obj_26
+    3300010: obj_27
+    3300012: obj_28
+    3300014: obj_29
+    3300016: obj_30
+    3300018: obj_31
+    3300020: obj_32
+    3300022: obj_33
+    3300024: obj_34
+    3300026: obj_35
+    3300028: obj_36
+    3300030: obj_37
+    3300032: obj_38
+    3300034: Rectangle0
+    3300036: Rectangle1
+    3300038: Rectangle2
+    3300040: Rectangle3
+    3300042: Rectangle4
+    3300044: Rectangle5
+    3300046: Rectangle6
+    4300000: obj_35
+    4300002: obj_34
+    4300004: obj_33
+    4300006: obj_32
+    4300008: obj_31
+    4300010: obj_30
+    4300012: obj_29
+    4300014: obj_28
+    4300016: obj_27
+    4300018: obj_26
+    4300020: obj_25
+    4300022: obj_24
+    4300024: obj_23
+    4300026: obj_36
+    4300028: obj_38
+    4300030: obj_37
+    4300032: Rectangle0
+    4300034: Rectangle1
+    4300036: Rectangle2
+    4300038: Rectangle3
+    4300040: Rectangle4
+    4300042: Rectangle5
+    4300044: Box6359
+    4300046: Rectangle6
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: st gold
+    second: {fileID: 2100000, guid: e6a8f559bb7974344ace1de5960b8383, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: st wood
+    second: {fileID: 2100000, guid: a14d65f4e8b973b40831430564047e8a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standart metal
+    second: {fileID: 2100000, guid: eae6c702edb8ba348b523546b743bdd0, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
