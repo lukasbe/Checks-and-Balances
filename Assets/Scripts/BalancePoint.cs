@@ -46,8 +46,8 @@ public class BalancePoint : MonoBehaviour {
 		
 	public Vector3 MoveBalancePoint(float x, float y)
 	{
-		transform.position = new Vector3 (x, 0, y);
-		return transform.position;
+		transform.localPosition = new Vector3 (x, 0, y);
+		return transform.localPosition;
 	}
 
 	public void initBalancePointPosition()

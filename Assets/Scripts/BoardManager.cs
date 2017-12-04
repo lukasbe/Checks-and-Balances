@@ -317,8 +317,18 @@ public class BoardManager : MonoBehaviour
 
 	private IEnumerator MoveWatchHand(){
 
-		float balance = rb.worldCenterOfMass.z;
-		setSpringPos (balance);
+		float balance = balancePoint.transform.localPosition.z;
+		Debug.Log ("Center of Mass: " + balancePoint.transform.localPosition.z);
+
+		/*
+		if(balance < 3.0f || balance > 5.0f) {
+			endGame();
+			yield return null;
+		}
+		*/
+		if (numberOfMoves > 0)
+			endGame ();
+		
 
 		yield return new WaitForSeconds (2);
 
@@ -332,15 +342,6 @@ public class BoardManager : MonoBehaviour
         }
 
         ShowGameCam();
-
-        //if(balance < 3.0f || balance > 5.0f) {
-        //    endGame();
-        //}
-
-        if (numberOfMoves > 4)
-        {
-            endGame();
-        }
 
 	}
 
@@ -358,15 +359,6 @@ public class BoardManager : MonoBehaviour
 
 	public void redoRotation(){
 		float balance = rb.worldCenterOfMass.z;
-		//setSpringPos (balance);
-	}
-
-	private void setSpringPos(float angle){
-		float springPos = Map (3.0f, 5.0f, -80.0f, 80.0f, angle);
-		HingeJoint joint = GetComponent<HingeJoint> ();
-		JointSpring spring = joint.spring;
-		spring.targetPosition = springPos;
-        //joint.spring = spring;
 	}
 
     private void endGame()
@@ -386,9 +378,15 @@ public class BoardManager : MonoBehaviour
                     foreach (Transform child in piece.transform)
                     {
                         child.GetComponent<BoxCollider>().enabled = true;
-                        child.GetComponent<Rigidbody>().isKinematic = false;
+						Rigidbody cRB = GetComponent<Rigidbody> ();
+						cRB.isKinematic = false;
+						cRB.angularDrag = 0;
+						cRB.drag = 0;
                     }
-                    piece.GetComponent<Rigidbody>().isKinematic = false;
+					Rigidbody pRB = piece.GetComponent<Rigidbody> ();
+                    pRB.isKinematic = false;
+					pRB.angularDrag = 0;
+					pRB.drag = 0;
                 }
             }
         }
