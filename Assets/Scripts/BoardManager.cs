@@ -292,6 +292,8 @@ public class BoardManager : MonoBehaviour
             blackActionCam.enabled = false;
             moveCam.enabled = false;
         }
+
+        moveCam.GetComponent<MoveCamera>().resetPosition();
 	}
 
     private void MoveGameCam()

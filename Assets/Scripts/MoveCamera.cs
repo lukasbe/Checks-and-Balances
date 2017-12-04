@@ -79,7 +79,7 @@ public class MoveCamera : MonoBehaviour
         transform.position = blackOrigin.position;
         transform.rotation = blackOrigin.rotation;
 
-         canvas.transform.gameObject.SetActive(true);
+        canvas.transform.gameObject.SetActive(true);
     }
 
     public void resetPosition()
