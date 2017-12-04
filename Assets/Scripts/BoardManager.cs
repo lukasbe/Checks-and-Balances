@@ -246,6 +246,7 @@ public class BoardManager : MonoBehaviour
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
 		selectedChesspiece = null;
+        numberOfMoves += 1;
 	}
 
 	private void ShowBalanceFields ()
@@ -331,6 +332,16 @@ public class BoardManager : MonoBehaviour
         }
 
         ShowGameCam();
+
+        //if(balance < 3.0f || balance > 5.0f) {
+        //    endGame();
+        //}
+
+        if (numberOfMoves > 4)
+        {
+            endGame();
+        }
+
 	}
 
 	private float Map(float oldMin, float oldMax, float newMin, float newMax, float value){
@@ -355,8 +366,33 @@ public class BoardManager : MonoBehaviour
 		HingeJoint joint = GetComponent<HingeJoint> ();
 		JointSpring spring = joint.spring;
 		spring.targetPosition = springPos;
-		//joint.spring = spring;
+        //joint.spring = spring;
 	}
+
+    private void endGame()
+    {
+        Debug.Log("Ending game");
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+        Chesspiece piece;
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                piece = Chesspieces[i, j];
+                if(piece != null)
+                {
+                    Vector3 up = MoveHighlights.moveHighlights[i, j].transform.up;
+                    piece.GetComponent<BoxCollider>().enabled = true;
+                    foreach (Transform child in piece.transform)
+                    {
+                        child.GetComponent<BoxCollider>().enabled = true;
+                        child.GetComponent<Rigidbody>().isKinematic = false;
+                    }
+                    piece.GetComponent<Rigidbody>().isKinematic = false;
+                }
+            }
+        }
+    }
 
 	/*
 	private void TempMoveBalancePoint ()
