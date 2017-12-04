@@ -24,7 +24,7 @@ public class BoardManager : MonoBehaviour
 	private int selectionY = -1;
 
     private int numberOfMoves = 0;
-    private int fastCamSwitchThreshold = 2;
+    private int fastCamSwitchThreshold = 10;
 
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
@@ -320,16 +320,11 @@ public class BoardManager : MonoBehaviour
 		float balance = balancePoint.transform.localPosition.z;
 		Debug.Log ("Center of Mass: " + balancePoint.transform.localPosition.z);
 
-		/*
 		if(balance < 3.0f || balance > 5.0f) {
 			endGame();
 			yield return null;
 		}
-		*/
-		if (numberOfMoves > 0)
-			endGame ();
-		
-
+	
 		yield return new WaitForSeconds (2);
 
         if (numberOfMoves < fastCamSwitchThreshold)
@@ -363,7 +358,6 @@ public class BoardManager : MonoBehaviour
 
     private void endGame()
     {
-        Debug.Log("Ending game");
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
         Chesspiece piece;
         for (int i = 0; i < 8; i++)
