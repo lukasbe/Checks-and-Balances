@@ -23,6 +23,9 @@ public class BoardManager : MonoBehaviour
 	private int selectionX = -1;
 	private int selectionY = -1;
 
+    private int numberOfMoves = 0;
+    private int fastCamSwitchThreshold = 2;
+
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
 
@@ -31,7 +34,13 @@ public class BoardManager : MonoBehaviour
 	public GameObject chessboard;
 	private Rigidbody rb;
 
-	public Camera[] cams;
+    public Camera whiteGameCam;
+    public Camera whiteActionCam;
+
+    public Camera blackGameCam;
+    public Camera blackActionCam;
+
+    public Camera moveCam;
 
 	public bool isWhiteTurn;
 
@@ -45,8 +54,12 @@ public class BoardManager : MonoBehaviour
 
 	private void Start ()
 	{
-		cams [0].enabled = true;
-		cams [1].enabled = false;
+        whiteGameCam.enabled = true;
+        whiteActionCam.enabled = false;
+        blackGameCam.enabled = false;
+        blackActionCam.enabled = false;
+        moveCam.enabled = false;
+
 		InstantiateChessPieces ();
 		isWhiteTurn = true;
 		balancePoint.initBalancePointPosition ();
@@ -168,13 +181,23 @@ public class BoardManager : MonoBehaviour
 		MoveHighlights.Instance.HighlightAllowedMoves (allowedMoves);
 	}
 
+    private Camera activeCamera ()
+    {
+        if (isWhiteTurn == true)
+            return whiteGameCam;
+        else
+            return blackGameCam;
+    }
+
 	private void UpdateSelection ()
 	{
-		if (!Camera.main)
-			return;
+        //if (!Camera.main)
+        //return;
+
+        Camera activeCam = activeCamera();
 
 		RaycastHit hit;
-		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("MoveHighlight"))) {
+        if (Physics.Raycast (activeCam.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("MoveHighlight"))) {
 			//Debug.Log ("Mouse: (" + hit.point.x + ", " + hit.point.y + ", " + hit.point.z + ")");
 			GameObject selectedmoveHighlight = hit.collider.gameObject;
 			MoveHighlights.Instance.GetSelectionIndex (selectedmoveHighlight, out selectionX, out selectionY);
@@ -207,7 +230,17 @@ public class BoardManager : MonoBehaviour
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-			ShowActionCam ();
+			
+            if (numberOfMoves < fastCamSwitchThreshold)
+            {
+                MoveGameCam();
+            }
+            else
+            {
+                ShowActionCam();
+            }
+
+
 			StartCoroutine ("MoveWatchHand");
 		}
 		MoveHighlights.Instance.HideHighlights ();
@@ -220,15 +253,64 @@ public class BoardManager : MonoBehaviour
 		//BalanceHighlights.Instance.HighlightBalanceFields ();
 	}
 
-	private void ShowActionCam(){
-		cams[0].enabled = false;
-		cams[1].enabled = true;
+	private void ShowActionCam()
+    {
+        if(isWhiteTurn == true)
+        {
+            whiteGameCam.enabled = false;
+            whiteActionCam.enabled = true;
+            blackGameCam.enabled = false;
+            blackActionCam.enabled = false;
+            moveCam.enabled = false;
+
+        }
+        else
+        {
+            whiteGameCam.enabled = false;
+            whiteActionCam.enabled = false;
+            blackGameCam.enabled = false;
+            blackActionCam.enabled = true;
+            moveCam.enabled = false;
+        }
 	}
 
-	private void ShowGameCam(){
-		cams[0].enabled = true;
-		cams[1].enabled = false;
+	private void ShowGameCam()
+    {
+        if (isWhiteTurn == true)
+        {
+            whiteGameCam.enabled = true;
+            whiteActionCam.enabled = false;
+            blackGameCam.enabled = false;
+            blackActionCam.enabled = false;
+            moveCam.enabled = false;
+        }
+        else
+        {
+            whiteGameCam.enabled = false;
+            whiteActionCam.enabled = false;
+            blackGameCam.enabled = true;
+            blackActionCam.enabled = false;
+            moveCam.enabled = false;
+        }
 	}
+
+    private void MoveGameCam()
+    {
+        whiteGameCam.enabled = false;
+        whiteActionCam.enabled = false;
+        blackGameCam.enabled = false;
+        blackActionCam.enabled = false;
+        moveCam.enabled = true;
+
+        if(isWhiteTurn == true)
+        {
+            moveCam.GetComponent<MoveCamera>().moveToWhiteTarget();
+        }
+        else
+        {
+            moveCam.GetComponent<MoveCamera>().moveToBlackTarget();
+        }
+    }
 
 	private IEnumerator MoveWatchHand(){
 
@@ -236,7 +318,17 @@ public class BoardManager : MonoBehaviour
 		setSpringPos (balance);
 
 		yield return new WaitForSeconds (2);
-		ShowGameCam ();
+
+        if (numberOfMoves < fastCamSwitchThreshold)
+        {
+            yield return new WaitForSeconds(4);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2);
+        }
+
+        ShowGameCam();
 	}
 
 	private float Map(float oldMin, float oldMax, float newMin, float newMax, float value){
