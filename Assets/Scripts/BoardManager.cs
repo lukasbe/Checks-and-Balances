@@ -75,7 +75,7 @@ public class BoardManager : MonoBehaviour
 					MoveChesspiece (selectionX, selectionY);
 			}
 		}
-		if (moveCam.transform.localPosition.x > 11.0f || moveCam.transform.localPosition.x < -2.0f) {
+		if (moveCam.transform.localPosition.x > 13.0f || moveCam.transform.localPosition.x < -6.0f) {
 			rb.constraints = RigidbodyConstraints.None;
 		}
 	}
