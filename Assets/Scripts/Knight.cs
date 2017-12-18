@@ -6,7 +6,7 @@ public class Knight : Chesspiece {
 
 	public Knight()
 	{
-		this.SetWeight(2);
+		this.SetWeight(3);
 	}
 
 	public override bool[,] PossibleMove ()
