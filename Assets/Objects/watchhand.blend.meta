@@ -1,85 +1,35 @@
 fileFormatVersion: 2
-guid: 5bd2d19a08d07cf469f355de995fbb0a
-timeCreated: 1512330638
+guid: 847aebbcb343e2542bf60613782b1ede
+timeCreated: 1513622205
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
+    100000: Cone
     100002: Cube
-    100004: Cube_002
-    100006: Plane
-    100008: Torus
-    100010: Torus_000
-    100012: Torus_001
-    100014: Torus_003
-    100016: Chessboard
-    100018: Torus_002
-    400000: //RootNode
+    100004: //RootNode
+    400000: Cone
     400002: Cube
-    400004: Cube_002
-    400006: Plane
-    400008: Torus
-    400010: Torus_000
-    400012: Torus_001
-    400014: Torus_003
-    400016: Chessboard
-    400018: Torus_002
-    2300000: Cube
-    2300002: Cube_002
-    2300004: Plane
-    2300006: Torus
-    2300008: Torus_000
-    2300010: Torus_001
-    2300012: Torus_003
-    2300014: Chessboard
-    2300016: Torus_002
-    3300000: Cube
-    3300002: Cube_002
-    3300004: Plane
-    3300006: Torus
-    3300008: Torus_000
-    3300010: Torus_001
-    3300012: Torus_003
-    3300014: Chessboard
-    3300016: Torus_002
-    4300000: Torus
+    400004: //RootNode
+    2300000: Cone
+    2300002: Cube
+    3300000: Cone
+    3300002: Cube
+    4300000: Cone
     4300002: Cube
-    4300004: Plane
-    4300006: Cube_002
-    4300008: Torus_001
-    4300010: Torus_000
-    4300012: Torus_003
-    4300014: Chessboard
-    4300016: Torus_002
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material__157
-    second: {fileID: 2100000, guid: 8bc8c32b6d542cf4687df901e823da84, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__194
-    second: {fileID: 2100000, guid: 07c35b2816f1d334698b611ced25d911, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Texture
-    second: {fileID: 2100000, guid: f1760459dbb002b4388081296f9f5dc0, type: 2}
+      name: Material
+    second: {fileID: 2100000, guid: 07813abd1455f9f4c87eef524f501496, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: unnamed
     second: {fileID: 2100000, guid: 3f183a3cc25673143a3b4abeee9c8c20, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: w__1
-    second: {fileID: 2100000, guid: cc1c4315c06d8a44cbf8940ceb1c51c6, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
