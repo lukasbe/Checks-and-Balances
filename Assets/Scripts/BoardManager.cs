@@ -306,11 +306,11 @@ public class BoardManager : MonoBehaviour
 
         if(isWhiteTurn == true)
         {
-            moveCam.GetComponent<MoveCamera>().moveToWhiteTarget();
+            moveCam.GetComponent<MoveCamera>().moveToBlackTarget();
         }
         else
         {
-            moveCam.GetComponent<MoveCamera>().moveToBlackTarget();
+            moveCam.GetComponent<MoveCamera>().moveToWhiteTarget();
         }
     }
 
