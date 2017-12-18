@@ -15,6 +15,9 @@ public class MoveCamera : MonoBehaviour
     private bool move = false;
     private bool white = true;
     private float moveSpeed = 2.0f;
+    private Vector3 velocity = Vector3.zero;
+
+    private float rotSpeed = 0.7f;
 
     void Start()
     {
@@ -36,9 +39,12 @@ public class MoveCamera : MonoBehaviour
                 target = whiteTarget;
             }
 
-            transform.position = Vector3.Lerp(transform.position, target.position, moveSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, moveSpeed * Time.deltaTime);
-        }
+            //transform.position = Vector3.Slerp(transform.position, target.position, moveSpeed * Time.deltaTime);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, moveSpeed * Time.deltaTime);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, rotSpeed * Time.deltaTime);
+            transform.position = Vector3.SmoothDamp(transform.position, target.position, ref velocity, moveSpeed);
+           }
 
         else
         {
