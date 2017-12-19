@@ -22,7 +22,7 @@ public class MoveCamera : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        cam.aspect = 1.8f;
+        //cam.aspect = 1.8f;
         resetPosition();
         setAspectRatio();
     }
@@ -54,17 +54,17 @@ public class MoveCamera : MonoBehaviour
 
     public void setAspectRatio()
     {
-        var variance = 2.3f / cam.aspect;
+        //var variance = 2.3f / cam.aspect;
 
-        if (variance < 1.0f)
-        {
-            cam.rect = new Rect((1.0f - variance) / 2.0f, 0.0f, variance, 1.0f);
-        }
-        else
-        {
-            variance = 1.0f / variance;
-            cam.rect = new Rect(0.0f, (1.0f - variance) / 2.0f, 1.0f, variance);
-        }
+        //if (variance < 1.0f)
+        //{
+        //    cam.rect = new Rect((1.0f - variance) / 2.0f, 0.0f, variance, 1.0f);
+        //}
+        //else
+        //{
+        //    variance = 1.0f / variance;
+        //    cam.rect = new Rect(0.0f, (1.0f - variance) / 2.0f, 1.0f, variance);
+        //}
     }
 
 
@@ -75,7 +75,7 @@ public class MoveCamera : MonoBehaviour
         transform.position = whiteOrigin.position;
         transform.rotation = whiteOrigin.rotation;
 
-        canvas.transform.gameObject.SetActive(true);
+        //canvas.transform.gameObject.SetActive(true);
     }
 
     public void moveToBlackTarget()
@@ -85,12 +85,12 @@ public class MoveCamera : MonoBehaviour
         transform.position = blackOrigin.position;
         transform.rotation = blackOrigin.rotation;
 
-        canvas.transform.gameObject.SetActive(true);
+        //canvas.transform.gameObject.SetActive(true);
     }
 
     public void resetPosition()
     {
-        canvas.transform.gameObject.SetActive(false);
+        //canvas.transform.gameObject.SetActive(false);
         move = false;
     }
 }
