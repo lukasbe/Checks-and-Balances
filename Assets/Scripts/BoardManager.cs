@@ -75,6 +75,9 @@ public class BoardManager : MonoBehaviour
 					MoveChesspiece (selectionX, selectionY);
 			}
 		}
+		if (moveCam.transform.localPosition.x > 13.0f || moveCam.transform.localPosition.x < -6.0f) {
+			rb.constraints = RigidbodyConstraints.None;
+		}
 	}
 
 	public void InstantiateChessPlanes ()
@@ -318,6 +321,8 @@ public class BoardManager : MonoBehaviour
 
 		float balance = rb.worldCenterOfMass.z;
 		setSpringPos (balance);
+
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 
 		yield return new WaitForSeconds (2);
 
