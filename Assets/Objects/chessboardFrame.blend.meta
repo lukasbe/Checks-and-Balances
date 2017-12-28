@@ -15,6 +15,7 @@ ModelImporter:
     100014: Torus_003
     100016: Chessboard
     100018: Torus_002
+    100020: Cylinder_001
     400000: //RootNode
     400002: Cube
     400004: Cube_002
@@ -25,6 +26,7 @@ ModelImporter:
     400014: Torus_003
     400016: Chessboard
     400018: Torus_002
+    400020: Cylinder_001
     2300000: Cube
     2300002: Cube_002
     2300004: Plane
@@ -34,6 +36,8 @@ ModelImporter:
     2300012: Torus_003
     2300014: Chessboard
     2300016: Torus_002
+    2300018: Cylinder_001
+    2300020: //RootNode
     3300000: Cube
     3300002: Cube_002
     3300004: Plane
@@ -43,6 +47,8 @@ ModelImporter:
     3300012: Torus_003
     3300014: Chessboard
     3300016: Torus_002
+    3300018: Cylinder_001
+    3300020: //RootNode
     4300000: Torus
     4300002: Cube
     4300004: Plane
@@ -52,9 +58,25 @@ ModelImporter:
     4300012: Torus_003
     4300014: Chessboard
     4300016: Torus_002
+    4300018: Cylinder_001
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 07813abd1455f9f4c87eef524f501496, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_002
+    second: {fileID: 2100000, guid: fd583a3437add354fa0f8ae4de82306e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_003
+    second: {fileID: 2100000, guid: 5b8f69ecc06114a4492b05320b14e19c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

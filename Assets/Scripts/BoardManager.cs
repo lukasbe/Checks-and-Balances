@@ -20,6 +20,8 @@ public class BoardManager : MonoBehaviour
 
 	public float currentRotAngle{ get; set;}
 
+	public bool? whiteWon{ get; set;}
+
 	private int selectionX = -1;
 	private int selectionY = -1;
 
@@ -78,6 +80,7 @@ public class BoardManager : MonoBehaviour
 		if (moveCam.transform.localPosition.x > 13.0f || moveCam.transform.localPosition.x < -6.0f) {
 			rb.constraints = RigidbodyConstraints.None;
 		}
+		whiteWon = WhiteWon ();
 	}
 
 	public void InstantiateChessPlanes ()
@@ -361,6 +364,15 @@ public class BoardManager : MonoBehaviour
 		JointSpring spring = joint.spring;
 		spring.targetPosition = springPos;
 		//joint.spring = spring;
+	}
+
+	private bool? WhiteWon(){
+		if (balancePoint.transform.localPosition.z <= 2.9)
+			return true;
+		else if (balancePoint.transform.localPosition.z >= 5.1)
+			return false;
+		else
+			return null;
 	}
 
 	/*
