@@ -5,17 +5,21 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
 
-	private float speedRot = 0; //a speed modifier
-	private float speedTrans = 3.0f;
+	//private float speedRot = 0; //a speed modifier
+	//private float speedTrans = 3.0f;
 	private Vector3 point; //the coord to the point where the camera looks at
+	private bool actionCamEnabled;
+	public bool isWhiteCam;
 
 	void Start ()
 	{
 		//Set up things on start 
 		point = new Vector3 (4.0f, 0.0f, 4.0f); //get target's coords
-		transform.LookAt (point); //makes the camera look to it
+		AlignCamera();
+		actionCamEnabled = false;
 	}
 
+	/*
 	void Update ()
 	{
 		//makes the camera rotate around "point" coords, rotating around its Y axis, 20 degrees per second times the speed modifier
@@ -44,5 +48,30 @@ public class CameraManager : MonoBehaviour
 		}
 		transform.LookAt (point);
 	}
+	*/
 
+	void Update() {
+		if (Input.GetKeyDown (KeyCode.C)) {
+			if (actionCamEnabled)
+				BoardManager.Instance.ShowGameCam ();
+			else
+				BoardManager.Instance.ShowActionCam ();
+			actionCamEnabled = !actionCamEnabled;
+		}
+
+		if (!actionCamEnabled)
+			AlignCamera ();
+	}
+
+	private void AlignCamera(){
+		transform.position = point;
+		Vector3 chessUp = BoardManager.Instance.balancePoint.transform.up;
+		transform.position = point + (chessUp * 10);
+		if(isWhiteCam)
+			transform.RotateAround (point, new Vector3 (1.0f, 0.0f, 0.0f), 40.0f);
+		else
+			transform.RotateAround (point, new Vector3 (1.0f, 0.0f, 0.0f), -40.0f);
+		transform.Translate (0.0f, (BoardManager.Instance.balancePoint.transform.localPosition.z - 4), 0.0f);
+		transform.LookAt (point); //makes the camera look to it
+	}
 }

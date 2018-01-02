@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
 
-	private BalancePoint balancePoint;
+	public BalancePoint balancePoint;
 
 	private const float TILE_SIZE = 1.0f;
 	private const float TILE_OFFSET = 0.5f;
@@ -69,6 +69,7 @@ public class BoardManager : MonoBehaviour
 
 	private void Update(){
 		UpdateSelection ();
+		PiecesImageManager.Instance.SetTexture (selectionX, selectionY);
 		if (Input.GetMouseButtonDown (0)) {
 			if (selectionX >= 0 && selectionY >= 0) {
 				if (selectedChesspiece == null)
@@ -78,7 +79,7 @@ public class BoardManager : MonoBehaviour
 			}
 		}
 		if (moveCam.transform.localPosition.x > 13.0f || moveCam.transform.localPosition.x < -6.0f) {
-			rb.constraints = RigidbodyConstraints.None;
+			rb.isKinematic = false;
 		}
 		whiteWon = WhiteWon ();
 	}
@@ -116,10 +117,10 @@ public class BoardManager : MonoBehaviour
 		SpawnChessPieces (2, 5, 7);
 
 		//white queen
-		SpawnChessPieces (3, 4, 7);
+		SpawnChessPieces (4, 4, 7);
 
 		//white king
-		SpawnChessPieces (4, 3, 7);
+		SpawnChessPieces (3, 3, 7);
 
 		//white pawns
 		for (int i = 0; i < 8; i++)
@@ -138,10 +139,10 @@ public class BoardManager : MonoBehaviour
 		SpawnChessPieces (8, 5, 0);
 
 		//black queen
-		SpawnChessPieces (9, 4, 0);
+		SpawnChessPieces (10, 4, 0);
 
 		//black king
-		SpawnChessPieces (10, 3, 0);
+		SpawnChessPieces (9, 3, 0);
 
 		//black pawns
 		for (int i = 0; i < 8; i++)
@@ -259,7 +260,7 @@ public class BoardManager : MonoBehaviour
 		//BalanceHighlights.Instance.HighlightBalanceFields ();
 	}
 
-	private void ShowActionCam()
+	public void ShowActionCam()
     {
         if(isWhiteTurn == true)
         {
@@ -280,7 +281,7 @@ public class BoardManager : MonoBehaviour
         }
 	}
 
-	private void ShowGameCam()
+	public void ShowGameCam()
     {
         if (isWhiteTurn == true)
         {
@@ -322,10 +323,11 @@ public class BoardManager : MonoBehaviour
 
 	private IEnumerator MoveWatchHand(){
 
-		float balance = rb.worldCenterOfMass.z;
+		float balance = rb.centerOfMass.z;
+		Debug.Log ("Balance: " + (4 - balance));
 		setSpringPos (balance);
 
-		rb.constraints = RigidbodyConstraints.FreezeRotation;
+		rb.isKinematic = true;
 
 		yield return new WaitForSeconds (2);
 
@@ -354,7 +356,8 @@ public class BoardManager : MonoBehaviour
 	}
 
 	public void redoRotation(){
-		float balance = rb.worldCenterOfMass.z;
+		float balance = rb.centerOfMass.z;
+		Debug.Log ("Balance: " + (4 - balance));
 		//setSpringPos (balance);
 	}
 
@@ -367,9 +370,9 @@ public class BoardManager : MonoBehaviour
 	}
 
 	private bool? WhiteWon(){
-		if (balancePoint.transform.localPosition.z <= 2.9)
+		if (rb.centerOfMass.z <= 2.9)
 			return true;
-		else if (balancePoint.transform.localPosition.z >= 5.1)
+		else if (rb.centerOfMass.z >= 5.1)
 			return false;
 		else
 			return null;
