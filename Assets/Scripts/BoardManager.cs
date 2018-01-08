@@ -394,10 +394,12 @@ public class BoardManager : MonoBehaviour
 		rb.isKinematic = true;
 		foreach (Chesspiece c in Chesspieces) {
 			if (c != null) {
+				c.transform.SetParent (null);
 				Rigidbody crb = c.gameObject.AddComponent (typeof(Rigidbody)) as Rigidbody;
 				BoxCollider bc = c.gameObject.AddComponent (typeof(BoxCollider)) as BoxCollider;
 				foreach (GameObject g in c.weights) {
 					if (g != null) {
+						g.transform.SetParent (null);
 						Rigidbody wrb = g.AddComponent (typeof(Rigidbody)) as Rigidbody;
 						BoxCollider wbc = g.AddComponent (typeof(BoxCollider)) as BoxCollider;
 					}
