@@ -16,6 +16,7 @@ public abstract class Chesspiece : MonoBehaviour
 	public Material[] materials;
 	public Renderer rend;
 	public GameObject weightPrefab;
+	public List<GameObject> weights = new List<GameObject> ();
 
 	private void Start ()
 	{
@@ -23,6 +24,7 @@ public abstract class Chesspiece : MonoBehaviour
 		rend.enabled = true;
 		materials = rend.materials;
 		rend.sharedMaterial = materials [0];
+		weights = new List<GameObject> ();
 		CalculateHeight ();
 		RenderWeights ();
 	}
@@ -73,6 +75,7 @@ public abstract class Chesspiece : MonoBehaviour
 			Quaternion localRot = go.transform.localRotation;
 			localRot.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
 			go.transform.localRotation = localRot;
+			weights.Add (go);
 		}
 	}
 

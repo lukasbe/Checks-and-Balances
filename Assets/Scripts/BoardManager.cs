@@ -45,6 +45,7 @@ public class BoardManager : MonoBehaviour
     public Camera moveCam;
 
 	public bool isWhiteTurn;
+	private bool gameOverCalled;
 
 	private void Awake ()
 	{
@@ -62,8 +63,11 @@ public class BoardManager : MonoBehaviour
         blackActionCam.enabled = false;
         moveCam.enabled = false;
 
+		gameOverCalled = false;
+
 		InstantiateChessPieces ();
 		isWhiteTurn = true;
+		whiteWon = null;
 		balancePoint.initBalancePointPosition ();
 	}
 
@@ -82,6 +86,9 @@ public class BoardManager : MonoBehaviour
 			rb.isKinematic = false;
 		}
 		whiteWon = WhiteWon ();
+		if (whiteWon != null) {
+			GameOver ();
+		}
 	}
 
 	public void InstantiateChessPlanes ()
@@ -222,6 +229,7 @@ public class BoardManager : MonoBehaviour
 			Chesspiece c = Chesspieces [x, y];
 			if (c != null && c.isWhite != isWhiteTurn) {
 				selectedChesspiece.AddWeight (c.GetWeight ());
+				c.weights.Clear ();
 				Destroy (c.gameObject);
 			}
 
@@ -249,6 +257,8 @@ public class BoardManager : MonoBehaviour
 
 
 			StartCoroutine ("MoveWatchHand");
+			Debug.Log ("BalancePoint: " + (4 - balancePoint.y));
+			Debug.Log ("Balance: " + (4 - rb.centerOfMass.z));
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
@@ -324,7 +334,6 @@ public class BoardManager : MonoBehaviour
 	private IEnumerator MoveWatchHand(){
 
 		float balance = rb.centerOfMass.z;
-		Debug.Log ("Balance: " + (4 - balance));
 		setSpringPos (balance);
 
 		rb.isKinematic = true;
@@ -357,7 +366,6 @@ public class BoardManager : MonoBehaviour
 
 	public void redoRotation(){
 		float balance = rb.centerOfMass.z;
-		Debug.Log ("Balance: " + (4 - balance));
 		//setSpringPos (balance);
 	}
 
@@ -370,12 +378,31 @@ public class BoardManager : MonoBehaviour
 	}
 
 	private bool? WhiteWon(){
+		if (gameOverCalled)
+			return null;
 		if (rb.centerOfMass.z <= 2.9)
 			return true;
 		else if (rb.centerOfMass.z >= 5.1)
 			return false;
 		else
 			return null;
+	}
+
+	private void GameOver(){
+		gameOverCalled = true;
+		rb.isKinematic = true;
+		foreach (Chesspiece c in Chesspieces) {
+			if (c != null) {
+				Rigidbody crb = c.gameObject.AddComponent (typeof(Rigidbody)) as Rigidbody;
+				BoxCollider bc = c.gameObject.AddComponent (typeof(BoxCollider)) as BoxCollider;
+				foreach (GameObject g in c.weights) {
+					if (g != null) {
+						Rigidbody wrb = g.AddComponent (typeof(Rigidbody)) as Rigidbody;
+						BoxCollider wbc = g.AddComponent (typeof(BoxCollider)) as BoxCollider;
+					}
+				}
+			}
+		}
 	}
 
 	/*
