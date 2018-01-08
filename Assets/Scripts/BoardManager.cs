@@ -34,7 +34,7 @@ public class BoardManager : MonoBehaviour
 	public GameObject chessboardWatchHand;
 
 	public GameObject chessboard;
-	private Rigidbody rb;
+	public Rigidbody rb { set; get;}
 
     public Camera whiteGameCam;
     public Camera whiteActionCam;
@@ -246,7 +246,8 @@ public class BoardManager : MonoBehaviour
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-			
+			rb.centerOfMass = balancePoint.transform.localPosition;
+
             if (numberOfMoves < fastCamSwitchThreshold)
             {
                 MoveGameCam();
@@ -255,11 +256,11 @@ public class BoardManager : MonoBehaviour
             {
                 ShowActionCam();
             }
-
-
+			rb.centerOfMass = balancePoint.transform.localPosition;
 			StartCoroutine ("MoveWatchHand");
-			Debug.Log ("BalancePoint: " + (4 - balancePoint.y));
-			Debug.Log ("Balance: " + (4 - rb.centerOfMass.z));
+			rb.centerOfMass = balancePoint.transform.localPosition;
+			Debug.Log ("BalancePoint: " + balancePoint.z);
+			Debug.Log ("Balance: " + rb.centerOfMass.z);
 		}
 		MoveHighlights.Instance.HideHighlights ();
 		selectedChesspiece.UnhighlightPiece ();
@@ -335,7 +336,7 @@ public class BoardManager : MonoBehaviour
 	private IEnumerator MoveWatchHand(){
 
 		float balance = rb.centerOfMass.z;
-		setSpringPos (balance);
+		setSpringPos (balancePoint.z);
 
 		rb.isKinematic = true;
 
@@ -375,7 +376,7 @@ public class BoardManager : MonoBehaviour
 		HingeJoint joint = GetComponent<HingeJoint> ();
 		JointSpring spring = joint.spring;
 		spring.targetPosition = springPos;
-		//joint.spring = spring;
+		joint.spring = spring;
 	}
 
 	private bool? WhiteWon(){

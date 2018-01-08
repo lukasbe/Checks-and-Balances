@@ -5,12 +5,12 @@ using UnityEngine;
 public class BalancePoint : MonoBehaviour {
 
 	public float x { get; set;}
-	public float y { get; set;}
+	public float z { get; set;}
 
 	public void Start(){
 		GetComponent<Renderer> ().enabled = false;
 		x = 4.0f;
-		y = 4.0f;
+		z = 4.0f;
 	}
 
 	/// <summary>
@@ -22,7 +22,7 @@ public class BalancePoint : MonoBehaviour {
 	public void CalculateBalancePoint(Chesspiece[,] Chesspieces, float TILE_OFFSET)
 	{
 		x = 4;
-		y = 0;
+		z = 0;
 
 		float totalFigureWeight = 0, totalFieldWeight = 0;
 
@@ -40,10 +40,10 @@ public class BalancePoint : MonoBehaviour {
 			totalFieldWeight += lineWeight * (i + 1);
 		}
 		//-1 to map back to [0,7]
-		y = (totalFieldWeight / totalFigureWeight) - 1;
-		y += TILE_OFFSET;
+		z = (totalFieldWeight / totalFigureWeight) - 1;
+		z += TILE_OFFSET;
 
-		MoveBalancePoint (x, y);
+		MoveBalancePoint (x, z);
 	}
 		
 	public Vector3 MoveBalancePoint(float x, float y)
@@ -54,7 +54,7 @@ public class BalancePoint : MonoBehaviour {
 
 	public void initBalancePointPosition()
 	{
-		MoveBalancePoint (x, y);
+		MoveBalancePoint (x, z);
 	}
 
 
