@@ -88,6 +88,7 @@ public class BoardManager : MonoBehaviour
 		whiteWon = WhiteWon ();
 		if (whiteWon != null) {
 			GameOver ();
+			WonTextManager.Instance.setWonText ();
 		}
 	}
 
