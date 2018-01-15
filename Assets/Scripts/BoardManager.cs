@@ -31,7 +31,11 @@ public class BoardManager : MonoBehaviour
 	public GameObject ChessFieldPrefab;
 	public List<GameObject> ChessPiecesPrefabs;
 
-	public GameObject chessboardWatchHand;
+	public GameObject whiteTick;
+	public GameObject blackTick;
+
+	public GameObject whiteWonObj;
+	public GameObject blackWonObj;
 
 	public GameObject chessboard;
 	public Rigidbody rb { set; get;}
@@ -51,7 +55,6 @@ public class BoardManager : MonoBehaviour
 	{
 		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> ();
 		BoardManager.Instance = this;
-		chessboard = transform.GetChild (1).gameObject;
 		rb = GetComponent<Rigidbody> ();
 	}
 
@@ -246,7 +249,7 @@ public class BoardManager : MonoBehaviour
 			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
 			//}
 			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-			rb.centerOfMass = balancePoint.transform.localPosition;
+			//rb.centerOfMass = balancePoint.transform.localPosition;
 
             if (numberOfMoves < fastCamSwitchThreshold)
             {
@@ -256,9 +259,9 @@ public class BoardManager : MonoBehaviour
             {
                 ShowActionCam();
             }
-			rb.centerOfMass = balancePoint.transform.localPosition;
+			//rb.centerOfMass = balancePoint.transform.localPosition;
 			StartCoroutine ("MoveWatchHand");
-			rb.centerOfMass = balancePoint.transform.localPosition;
+			//rb.centerOfMass = balancePoint.transform.localPosition;
 			Debug.Log ("BalancePoint: " + balancePoint.z);
 			Debug.Log ("Balance: " + rb.centerOfMass.z);
 		}
@@ -361,10 +364,7 @@ public class BoardManager : MonoBehaviour
 
 		return newValue ;
 	}
-
-	public void resetRotationToStart(){
-		chessboardWatchHand.transform.rotation = Quaternion.Euler (-90.0f, 0.0f, 0.0f);
-	}
+		
 
 	public void redoRotation(){
 		float balance = rb.centerOfMass.z;
@@ -382,9 +382,9 @@ public class BoardManager : MonoBehaviour
 	private bool? WhiteWon(){
 		if (gameOverCalled)
 			return null;
-		if (rb.centerOfMass.z <= 2.9)
+		if (whiteTick.GetComponent<BoxCollider>().bounds.Intersects(whiteWonObj.GetComponent<BoxCollider>().bounds))
 			return true;
-		else if (rb.centerOfMass.z >= 5.1)
+		else if (blackTick.GetComponent<BoxCollider>().bounds.Intersects(blackWonObj.GetComponent<BoxCollider>().bounds))
 			return false;
 		else
 			return null;
