@@ -27,31 +27,6 @@ public class MoveCamera : MonoBehaviour
         setAspectRatio();
     }
 
-    void Update()
-    {
-          
-        if (move)
-        {
-            Transform target = blackTarget;
-
-            if(white)
-            {
-                target = whiteTarget;
-            }
-
-            //transform.position = Vector3.Slerp(transform.position, target.position, moveSpeed * Time.deltaTime);
-            //transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, moveSpeed * Time.deltaTime);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, rotSpeed * Time.deltaTime);
-            transform.position = Vector3.SmoothDamp(transform.position, target.position, ref velocity, moveSpeed);
-           }
-
-        else
-        {
-            resetPosition();
-        }
-    }
-
     public void setAspectRatio()
     {
         //var variance = 2.3f / cam.aspect;
@@ -75,6 +50,8 @@ public class MoveCamera : MonoBehaviour
         transform.position = whiteOrigin.position;
         transform.rotation = whiteOrigin.rotation;
 
+		CameraMovement (whiteTarget);
+
         //canvas.transform.gameObject.SetActive(true);
     }
 
@@ -85,8 +62,15 @@ public class MoveCamera : MonoBehaviour
         transform.position = blackOrigin.position;
         transform.rotation = blackOrigin.rotation;
 
+		CameraMovement (blackTarget);
+
         //canvas.transform.gameObject.SetActive(true);
     }
+
+	private void CameraMovement(Transform actionCamPos){
+		LeanTween.move (cam.gameObject, actionCamPos.position, 1.5f).setEaseInOutQuint();
+		LeanTween.rotate (cam.gameObject, actionCamPos.rotation.eulerAngles, 1.5f).setEaseInOutQuint ();
+	}
 
     public void resetPosition()
     {
