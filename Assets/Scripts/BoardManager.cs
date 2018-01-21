@@ -1,44 +1,49 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
 
-	public BalancePoint balancePoint;
+    public BalancePoint balancePoint;
 
-	private const float TILE_SIZE = 1.0f;
-	private const float TILE_OFFSET = 0.5f;
+    private const float TILE_SIZE = 1.0f;
+    private const float TILE_OFFSET = 0.5f;
 
-	public static BoardManager Instance{ set; get; }
+    public static BoardManager Instance { set; get; }
 
-	public Chesspiece[,] Chesspieces{ set; get; }
+    public Chesspiece[,] Chesspieces { set; get; }
 
-	private Chesspiece selectedChesspiece;
+    private Chesspiece selectedChesspiece;
 
-	private bool[,] allowedMoves{ set; get; }
+    private bool[,] allowedMoves { set; get; }
 
-	public float currentRotAngle{ get; set;}
+    public float currentRotAngle { get; set; }
 
-	public bool? whiteWon{ get; set;}
+    public bool actionCamEnabled { get; set; }
 
-	private int selectionX = -1;
-	private int selectionY = -1;
+    public bool? whiteWon { get; set; }
+
+    private int selectionX = -1;
+    private int selectionY = -1;
 
     private int numberOfMoves = 0;
     private int fastCamSwitchThreshold = 2;
 
-	public GameObject ChessFieldPrefab;
-	public List<GameObject> ChessPiecesPrefabs;
+    public GameObject ChessFieldPrefab;
+    public List<GameObject> ChessPiecesPrefabs;
 
-	public GameObject whiteTick;
-	public GameObject blackTick;
+    public GameObject whiteTick;
+    public GameObject blackTick;
 
-	public GameObject whiteWonObj;
-	public GameObject blackWonObj;
+    public GameObject whiteWonObj;
+    public GameObject blackWonObj;
 
-	public GameObject chessboard;
-	public Rigidbody rb { set; get;}
+    public GameObject table;
+
+    public GameObject chessboard;
+    public Rigidbody rb { set; get; }
 
     public Camera whiteGameCam;
     public Camera whiteActionCam;
@@ -48,158 +53,166 @@ public class BoardManager : MonoBehaviour
 
     public Camera moveCam;
 
-	public bool isWhiteTurn;
-	private bool gameOverCalled;
+    public bool isWhiteTurn;
+    private bool gameOverCalled;
 
-	private void Awake ()
-	{
-		balancePoint = GameObject.Find ("BalancePoint").GetComponent<BalancePoint> ();
-		BoardManager.Instance = this;
-		rb = GetComponent<Rigidbody> ();
-	}
+    private void Awake()
+    {
+        balancePoint = GameObject.Find("BalancePoint").GetComponent<BalancePoint>();
+        BoardManager.Instance = this;
+        rb = GetComponent<Rigidbody>();
+        actionCamEnabled = false;
+    }
 
-	private void Start ()
-	{
+    private void Start()
+    {
         whiteGameCam.enabled = true;
         whiteActionCam.enabled = false;
         blackGameCam.enabled = false;
         blackActionCam.enabled = false;
         moveCam.enabled = false;
 
-		gameOverCalled = false;
+        gameOverCalled = false;
 
-		InstantiateChessPieces ();
-		isWhiteTurn = true;
-		whiteWon = null;
-		balancePoint.initBalancePointPosition ();
-	}
+        InstantiateChessPieces();
+        isWhiteTurn = true;
+        whiteWon = null;
+        balancePoint.initBalancePointPosition();
+    }
 
-	private void Update(){
-		UpdateSelection ();
-		PiecesImageManager.Instance.SetTexture (selectionX, selectionY);
-		if (Input.GetMouseButtonDown (0)) {
-			if (selectionX >= 0 && selectionY >= 0) {
-				if (selectedChesspiece == null)
-					SelectChesspiece (selectionX, selectionY);
-				else
-					MoveChesspiece (selectionX, selectionY);
-			}
-		}
-		if (moveCam.transform.localPosition.x > 13.0f || moveCam.transform.localPosition.x < -6.0f) {
-			rb.isKinematic = false;
-		}
-		whiteWon = WhiteWon ();
-		if (whiteWon != null) {
-			GameOver ();
-			WonTextManager.Instance.setWonText ();
-		}
-	}
+    private void Update()
+    {
+        UpdateSelection();
+        PiecesImageManager.Instance.SetTexture(selectionX, selectionY);
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (selectionX >= 0 && selectionY >= 0)
+            {
+                if (selectedChesspiece == null)
+                    SelectChesspiece(selectionX, selectionY);
+                else
+                    MoveChesspiece(selectionX, selectionY);
+            }
+        }
+        if (moveCam.transform.localPosition.x > 13.0f || moveCam.transform.localPosition.x < -6.0f && !gameOverCalled)
+        {
+            rb.isKinematic = false;
+        }
+        whiteWon = WhiteWon();
+        if (whiteWon != null)
+        {
+            GameOver();
+            WonTextManager.Instance.setWonText();
+        }
+    }
 
-	public void InstantiateChessPlanes ()
-	{
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Vector3 position = Vector3.zero;
-				position.x += (TILE_SIZE * i) + TILE_OFFSET;
-				position.z += (TILE_SIZE * j) + TILE_OFFSET;
-				position.y = -0.09f;
-				GameObject go = Instantiate (ChessFieldPrefab, position, Quaternion.Euler (0.0f, 0.0f, 0.0f)) as GameObject;
-				go.transform.SetParent (transform);
-			}
-		}
+    public void InstantiateChessPlanes()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                Vector3 position = Vector3.zero;
+                position.x += (TILE_SIZE * i) + TILE_OFFSET;
+                position.z += (TILE_SIZE * j) + TILE_OFFSET;
+                position.y = -0.09f;
+                GameObject go = Instantiate(ChessFieldPrefab, position, Quaternion.Euler(0.0f, 0.0f, 0.0f)) as GameObject;
+                go.transform.SetParent(transform);
+            }
+        }
 
-	}
+    }
 
-	private void InstantiateChessPieces ()
-	{
+    private void InstantiateChessPieces()
+    {
 
-		Chesspieces = new Chesspiece[8, 8];
+        Chesspieces = new Chesspiece[8, 8];
 
-		//white rooks
-		SpawnChessPieces (0, 0, 7);
-		SpawnChessPieces (0, 7, 7);
+        //white rooks
+        SpawnChessPieces(0, 0, 7);
+        SpawnChessPieces(0, 7, 7);
 
-		//white knights
-		SpawnChessPieces (1, 1, 7);
-		SpawnChessPieces (1, 6, 7);
+        //white knights
+        SpawnChessPieces(1, 1, 7);
+        SpawnChessPieces(1, 6, 7);
 
-		//white bishops
-		SpawnChessPieces (2, 2, 7);
-		SpawnChessPieces (2, 5, 7);
+        //white bishops
+        SpawnChessPieces(2, 2, 7);
+        SpawnChessPieces(2, 5, 7);
 
-		//white queen
-		SpawnChessPieces (4, 4, 7);
+        //white queen
+        SpawnChessPieces(4, 4, 7);
 
-		//white king
-		SpawnChessPieces (3, 3, 7);
+        //white king
+        SpawnChessPieces(3, 3, 7);
 
-		//white pawns
-		for (int i = 0; i < 8; i++)
-			SpawnChessPieces (5, i, 6);
+        //white pawns
+        for (int i = 0; i < 8; i++)
+            SpawnChessPieces(5, i, 6);
 
-		//black rooks
-		SpawnChessPieces (6, 0, 0);
-		SpawnChessPieces (6, 7, 0);
+        //black rooks
+        SpawnChessPieces(6, 0, 0);
+        SpawnChessPieces(6, 7, 0);
 
-		//black knights
-		SpawnChessPieces (7, 1, 0);
-		SpawnChessPieces (7, 6, 0);
+        //black knights
+        SpawnChessPieces(7, 1, 0);
+        SpawnChessPieces(7, 6, 0);
 
-		//black bishops
-		SpawnChessPieces (8, 2, 0);
-		SpawnChessPieces (8, 5, 0);
+        //black bishops
+        SpawnChessPieces(8, 2, 0);
+        SpawnChessPieces(8, 5, 0);
 
-		//black queen
-		SpawnChessPieces (10, 4, 0);
+        //black queen
+        SpawnChessPieces(10, 4, 0);
 
-		//black king
-		SpawnChessPieces (9, 3, 0);
+        //black king
+        SpawnChessPieces(9, 3, 0);
 
-		//black pawns
-		for (int i = 0; i < 8; i++)
-			SpawnChessPieces (11, i, 1);
-	}
+        //black pawns
+        for (int i = 0; i < 8; i++)
+            SpawnChessPieces(11, i, 1);
+    }
 
-	private void SpawnChessPieces (int index, int x, int y)
-	{
-		GameObject go = Instantiate (ChessPiecesPrefabs [index], GetTileCenter(x,y), Quaternion.Euler (-90.0f, 0.0f, 0.0f)) as GameObject;
-		go.transform.SetParent (chessboard.transform);
-		Chesspieces [x, y] = go.GetComponent<Chesspiece> ();
-		Chesspieces [x, y].SetPosition (x, y);
-	}
+    private void SpawnChessPieces(int index, int x, int y)
+    {
+        GameObject go = Instantiate(ChessPiecesPrefabs[index], GetTileCenter(x, y), Quaternion.Euler(-90.0f, 0.0f, 0.0f)) as GameObject;
+        go.transform.SetParent(chessboard.transform);
+        Chesspieces[x, y] = go.GetComponent<Chesspiece>();
+        Chesspieces[x, y].SetPosition(x, y);
+    }
 
-	public static Vector3 GetTileCenter (int x, int y)
-	{
-		Vector3 origin = Vector3.zero;
-		origin.x += (TILE_SIZE * x) + TILE_OFFSET;
-		origin.z += (TILE_SIZE * y) + TILE_OFFSET;
-		return origin;
-	}
+    public static Vector3 GetTileCenter(int x, int y)
+    {
+        Vector3 origin = Vector3.zero;
+        origin.x += (TILE_SIZE * x) + TILE_OFFSET;
+        origin.z += (TILE_SIZE * y) + TILE_OFFSET;
+        return origin;
+    }
 
-	private void SelectChesspiece (int x, int y)
-	{
-		if (Chesspieces [x, y] == null)
-			return;
+    private void SelectChesspiece(int x, int y)
+    {
+        if (Chesspieces[x, y] == null)
+            return;
 
-		if (Chesspieces [x, y].isWhite != isWhiteTurn)
-			return;
+        if (Chesspieces[x, y].isWhite != isWhiteTurn)
+            return;
 
-		bool hasAtLeastOneMove = false;
-		allowedMoves = Chesspieces [x, y].PossibleMove ();
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				if (allowedMoves [i, j])
-					hasAtLeastOneMove = true;
+        bool hasAtLeastOneMove = false;
+        allowedMoves = Chesspieces[x, y].PossibleMove();
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+                if (allowedMoves[i, j])
+                    hasAtLeastOneMove = true;
 
-		if (!hasAtLeastOneMove)
-			return;
+        if (!hasAtLeastOneMove)
+            return;
 
-		selectedChesspiece = Chesspieces [x, y];
-		selectedChesspiece.HighlightPiece ();
-		MoveHighlights.Instance.HighlightAllowedMoves (allowedMoves);
-	}
+        selectedChesspiece = Chesspieces[x, y];
+        selectedChesspiece.HighlightPiece();
+        MoveHighlights.Instance.HighlightAllowedMoves(allowedMoves);
+    }
 
-    private Camera activeCamera ()
+    private Camera activeCamera()
     {
         if (isWhiteTurn == true)
             return whiteGameCam;
@@ -207,49 +220,56 @@ public class BoardManager : MonoBehaviour
             return blackGameCam;
     }
 
-	private void UpdateSelection ()
-	{
+    private void UpdateSelection()
+    {
         //if (!Camera.main)
         //return;
 
         Camera activeCam = activeCamera();
 
-		RaycastHit hit;
-        if (Physics.Raycast (activeCam.ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("MoveHighlight"))) {
-			//Debug.Log ("Mouse: (" + hit.point.x + ", " + hit.point.y + ", " + hit.point.z + ")");
-			GameObject selectedmoveHighlight = hit.collider.gameObject;
-			MoveHighlights.Instance.GetSelectionIndex (selectedmoveHighlight, out selectionX, out selectionY);
-			//selectionX = (int)hit.point.x;
-			//selectionY = (int)hit.point.z;
-		//} else {
-			//selectionX = -1;
-			//selectionY = -1;
-		}
-	}
+        RaycastHit hit;
+        if (Physics.Raycast(activeCam.ScreenPointToRay(Input.mousePosition), out hit, 25.0f, LayerMask.GetMask("MoveHighlight")))
+        {
+            //Debug.Log ("Mouse: (" + hit.point.x + ", " + hit.point.y + ", " + hit.point.z + ")");
+            GameObject selectedmoveHighlight = hit.collider.gameObject;
+            MoveHighlights.Instance.GetSelectionIndex(selectedmoveHighlight, out selectionX, out selectionY);
+            //selectionX = (int)hit.point.x;
+            //selectionY = (int)hit.point.z;
+            //} else {
+            //selectionX = -1;
+            //selectionY = -1;
+        }
+        else {
+            selectionX = -1;
+            selectionY = -1;
+        }
+    }
 
-	private void MoveChesspiece (int x, int y)
-	{
-		if (allowedMoves [x, y]) {
-			Chesspiece c = Chesspieces [x, y];
-			if (c != null && c.isWhite != isWhiteTurn) {
-				selectedChesspiece.AddWeight (c.GetWeight ());
-				c.weights.Clear ();
-				Destroy (c.gameObject);
-			}
+    private void MoveChesspiece(int x, int y)
+    {
+        if (allowedMoves[x, y])
+        {
+            Chesspiece c = Chesspieces[x, y];
+            if (c != null && c.isWhite != isWhiteTurn)
+            {
+                selectedChesspiece.AddWeight(c.GetWeight());
+                c.weights.Clear();
+                Destroy(c.gameObject);
+            }
 
-			Chesspieces [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
-			selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter (x, y);
-			selectedChesspiece.SetPosition (x, y);
-			Chesspieces [x, y] = selectedChesspiece;
-			isWhiteTurn = !isWhiteTurn;
-			//if (selectedChesspiece.GetType() == typeof(Pawn)) {
-			//if (selectedChesspiece.isWhite && y == 0)
-			//	ChangePawnToQueen (selectedChesspiece, x, y, true);
-			//if (!selectedChesspiece.isWhite && y == 7)
-			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
-			//}
-			balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-			//rb.centerOfMass = balancePoint.transform.localPosition;
+            Chesspieces[selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+            selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter(x, y);
+            selectedChesspiece.SetPosition(x, y);
+            Chesspieces[x, y] = selectedChesspiece;
+            isWhiteTurn = !isWhiteTurn;
+            //if (selectedChesspiece.GetType() == typeof(Pawn)) {
+            //if (selectedChesspiece.isWhite && y == 0)
+            //	ChangePawnToQueen (selectedChesspiece, x, y, true);
+            //if (!selectedChesspiece.isWhite && y == 7)
+            //	ChangePawnToQueen (selectedChesspiece, x, y, false);
+            //}
+            balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
+            //rb.centerOfMass = balancePoint.transform.localPosition;
 
             if (numberOfMoves < fastCamSwitchThreshold)
             {
@@ -259,25 +279,25 @@ public class BoardManager : MonoBehaviour
             {
                 ShowActionCam();
             }
-			//rb.centerOfMass = balancePoint.transform.localPosition;
-			StartCoroutine ("MoveWatchHand");
-			//rb.centerOfMass = balancePoint.transform.localPosition;
-			Debug.Log ("BalancePoint: " + balancePoint.z);
-			Debug.Log ("Balance: " + rb.centerOfMass.z);
-		}
-		MoveHighlights.Instance.HideHighlights ();
-		selectedChesspiece.UnhighlightPiece ();
-		selectedChesspiece = null;
-	}
+            //rb.centerOfMass = balancePoint.transform.localPosition;
+            StartCoroutine("MoveWatchHand");
+            //rb.centerOfMass = balancePoint.transform.localPosition;
+            Debug.Log("BalancePoint: " + balancePoint.z);
+            Debug.Log("Balance: " + rb.centerOfMass.z);
+        }
+        MoveHighlights.Instance.HideHighlights();
+        selectedChesspiece.UnhighlightPiece();
+        selectedChesspiece = null;
+    }
 
-	private void ShowBalanceFields ()
-	{
-		//BalanceHighlights.Instance.HighlightBalanceFields ();
-	}
-
-	public void ShowActionCam()
+    private void ShowBalanceFields()
     {
-        if(isWhiteTurn == true)
+        //BalanceHighlights.Instance.HighlightBalanceFields ();
+    }
+
+    public void ShowActionCam()
+    {
+        if (isWhiteTurn == true)
         {
             whiteGameCam.enabled = false;
             whiteActionCam.enabled = true;
@@ -294,9 +314,9 @@ public class BoardManager : MonoBehaviour
             blackActionCam.enabled = true;
             moveCam.enabled = false;
         }
-	}
+    }
 
-	public void ShowGameCam()
+    public void ShowGameCam()
     {
         if (isWhiteTurn == true)
         {
@@ -316,7 +336,7 @@ public class BoardManager : MonoBehaviour
         }
 
         moveCam.GetComponent<MoveCamera>().resetPosition();
-	}
+    }
 
     private void MoveGameCam()
     {
@@ -326,7 +346,7 @@ public class BoardManager : MonoBehaviour
         blackActionCam.enabled = false;
         moveCam.enabled = true;
 
-        if(isWhiteTurn == true)
+        if (isWhiteTurn == true)
         {
             moveCam.GetComponent<MoveCamera>().moveToBlackTarget();
         }
@@ -336,14 +356,15 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-	private IEnumerator MoveWatchHand(){
+    private IEnumerator MoveWatchHand()
+    {
 
-		float balance = rb.centerOfMass.z;
-		setSpringPos (balancePoint.z);
+        float balance = rb.centerOfMass.z;
+        setSpringPos(balancePoint.z);
 
-		rb.isKinematic = true;
+        rb.isKinematic = true;
 
-		yield return new WaitForSeconds (2);
+        yield return new WaitForSeconds(2);
 
         if (numberOfMoves < fastCamSwitchThreshold)
         {
@@ -355,61 +376,94 @@ public class BoardManager : MonoBehaviour
         }
 
         ShowGameCam();
-	}
+    }
 
-	private float Map(float oldMin, float oldMax, float newMin, float newMax, float value){
-		float oldRange = (oldMax - oldMin);
-		float newRange = (newMax - newMin);
-		float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
+    private float Map(float oldMin, float oldMax, float newMin, float newMax, float value)
+    {
+        float oldRange = (oldMax - oldMin);
+        float newRange = (newMax - newMin);
+        float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
 
-		return newValue ;
-	}
-		
+        return newValue;
+    }
 
-	public void redoRotation(){
-		float balance = rb.centerOfMass.z;
-		//setSpringPos (balance);
-	}
 
-	private void setSpringPos(float angle){
-		float springPos = Map (3.0f, 5.0f, -80.0f, 80.0f, angle);
-		HingeJoint joint = GetComponent<HingeJoint> ();
-		JointSpring spring = joint.spring;
-		spring.targetPosition = springPos;
-		joint.spring = spring;
-	}
+    public void redoRotation()
+    {
+        float balance = rb.centerOfMass.z;
+        //setSpringPos (balance);
+    }
 
-	private bool? WhiteWon(){
-		if (gameOverCalled)
-			return null;
-		if (whiteTick.GetComponent<BoxCollider>().bounds.Intersects(whiteWonObj.GetComponent<BoxCollider>().bounds))
-			return true;
-		else if (blackTick.GetComponent<BoxCollider>().bounds.Intersects(blackWonObj.GetComponent<BoxCollider>().bounds))
-			return false;
-		else
-			return null;
-	}
+    public void ChangeCameraOnUserRequest()
+    {
+        if (actionCamEnabled)
+            ShowGameCam();
+        else
+            ShowActionCam();
+        actionCamEnabled = !actionCamEnabled;
+    }
 
-	private void GameOver(){
-		gameOverCalled = true;
-		rb.isKinematic = true;
-		foreach (Chesspiece c in Chesspieces) {
-			if (c != null) {
-				c.transform.SetParent (null);
-				Rigidbody crb = c.gameObject.AddComponent (typeof(Rigidbody)) as Rigidbody;
-				BoxCollider bc = c.gameObject.AddComponent (typeof(BoxCollider)) as BoxCollider;
-				foreach (GameObject g in c.weights) {
-					if (g != null) {
-						g.transform.SetParent (null);
-						Rigidbody wrb = g.AddComponent (typeof(Rigidbody)) as Rigidbody;
-						BoxCollider wbc = g.AddComponent (typeof(BoxCollider)) as BoxCollider;
-					}
-				}
-			}
-		}
-	}
+    private void setSpringPos(float angle)
+    {
+        float springPos = Map(3.0f, 5.0f, -80.0f, 80.0f, angle);
+        HingeJoint joint = GetComponent<HingeJoint>();
+        JointSpring spring = joint.spring;
+        spring.targetPosition = springPos;
+        joint.spring = spring;
+    }
 
-	/*
+    private bool? WhiteWon()
+    {
+        if (gameOverCalled)
+            return null;
+        if (whiteTick.GetComponent<BoxCollider>().bounds.Intersects(whiteWonObj.GetComponent<BoxCollider>().bounds))
+            return true;
+        else if (blackTick.GetComponent<BoxCollider>().bounds.Intersects(blackWonObj.GetComponent<BoxCollider>().bounds))
+            return false;
+        else
+            return null;
+    }
+
+    private void GameOver()
+    {
+        gameOverCalled = true;
+        //rb.isKinematic = true;
+        BoxCollider col = GetComponent<BoxCollider>();
+        Destroy(whiteTick.GetComponent<BoxCollider>());
+        Destroy(blackTick.GetComponent<BoxCollider>());
+        Destroy(whiteWonObj);
+        Destroy(blackWonObj);
+        col.isTrigger = false;
+        rb.isKinematic = true;
+        Rigidbody trb = table.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        trb.mass = 20.0f;
+        trb.isKinematic = true;
+        BoxCollider trc = table.AddComponent(typeof(BoxCollider)) as BoxCollider;
+        foreach (Chesspiece c in Chesspieces)
+        {
+            if (c != null)
+            {
+                c.transform.SetParent(null);
+                Rigidbody crb = c.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
+                crb.angularDrag = 1.5f;
+                crb.drag = 1.5f;
+                BoxCollider bc = c.gameObject.AddComponent(typeof(BoxCollider)) as BoxCollider;
+                foreach (GameObject g in c.weights)
+                {
+                    if (g != null)
+                    {
+                        g.transform.SetParent(null);
+                        Rigidbody wrb = g.AddComponent(typeof(Rigidbody)) as Rigidbody;
+                        wrb.angularDrag = 1.5f;
+                        wrb.drag = 1.5f;
+                        BoxCollider wbc = g.AddComponent(typeof(BoxCollider)) as BoxCollider;
+                    }
+                }
+            }
+        }
+    }
+
+    /*
 	private void TempMoveBalancePoint ()
 	{
 		if (selectionX >= 0 && selectionX < 8 && selectionY >= 0 && selectionY < 8) {

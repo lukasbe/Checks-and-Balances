@@ -8,7 +8,6 @@ public class CameraManager : MonoBehaviour
 	//private float speedRot = 0; //a speed modifier
 	//private float speedTrans = 3.0f;
 	private Vector3 point; //the coord to the point where the camera looks at
-	private bool actionCamEnabled;
 	public bool isWhiteCam;
 
 	void Start ()
@@ -16,7 +15,6 @@ public class CameraManager : MonoBehaviour
 		//Set up things on start 
 		point = new Vector3 (4.0f, 0.0f, 4.0f); //get target's coords
 		AlignCamera();
-		actionCamEnabled = false;
 	}
 
 	/*
@@ -51,15 +49,7 @@ public class CameraManager : MonoBehaviour
 	*/
 
 	void Update() {
-		if (Input.GetKeyDown (KeyCode.C)) {
-			if (actionCamEnabled)
-				BoardManager.Instance.ShowGameCam ();
-			else
-				BoardManager.Instance.ShowActionCam ();
-			actionCamEnabled = !actionCamEnabled;
-		}
-
-		if (!actionCamEnabled)
+		if (!BoardManager.Instance.actionCamEnabled)
 			AlignCamera ();
 	}
 
