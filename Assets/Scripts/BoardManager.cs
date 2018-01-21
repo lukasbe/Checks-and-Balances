@@ -427,16 +427,10 @@ public class BoardManager : MonoBehaviour
     private void GameOver()
     {
         gameOverCalled = true;
-        //rb.isKinematic = true;
         BoxCollider col = GetComponent<BoxCollider>();
-        Destroy(whiteTick.GetComponent<BoxCollider>());
-        Destroy(blackTick.GetComponent<BoxCollider>());
-        Destroy(whiteWonObj);
-        Destroy(blackWonObj);
         col.isTrigger = false;
-        rb.isKinematic = true;
         Rigidbody trb = table.AddComponent(typeof(Rigidbody)) as Rigidbody;
-        trb.mass = 20.0f;
+        //trb.mass = 2.0f;
         trb.isKinematic = true;
         BoxCollider trc = table.AddComponent(typeof(BoxCollider)) as BoxCollider;
         foreach (Chesspiece c in Chesspieces)

@@ -55,13 +55,13 @@ public class CameraManager : MonoBehaviour
 
 	private void AlignCamera(){
 		transform.position = point;
-		Vector3 chessUp = BoardManager.Instance.balancePoint.transform.up;
+		Vector3 chessUp = BoardManager.Instance.transform.up;
 		transform.position = point + (chessUp * 10);
 		if(isWhiteCam)
 			transform.RotateAround (point, new Vector3 (1.0f, 0.0f, 0.0f), 40.0f);
 		else
 			transform.RotateAround (point, new Vector3 (1.0f, 0.0f, 0.0f), -40.0f);
-		transform.Translate (0.0f, (BoardManager.Instance.balancePoint.transform.localPosition.z - 4), 0.0f);
+		transform.Translate (0.0f, (BoardManager.Instance.transform.localPosition.y), 0.0f);
 		transform.LookAt (point); //makes the camera look to it
 	}
 }
