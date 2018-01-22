@@ -49,7 +49,7 @@ public class CameraManager : MonoBehaviour
 	*/
 
 	void Update() {
-		if (!BoardManager.Instance.actionCamEnabled)
+		if (!BoardManager.Instance.actionCamEnabled && BoardManager.Instance.gameOverCalled)
 			AlignCamera ();
 	}
 

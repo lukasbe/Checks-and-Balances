@@ -54,7 +54,7 @@ public class BoardManager : MonoBehaviour
     public Camera moveCam;
 
     public bool isWhiteTurn;
-    private bool gameOverCalled;
+    public bool gameOverCalled { get; set; }
 	private bool fallFinished;
 
     private void Awake()
@@ -74,6 +74,7 @@ public class BoardManager : MonoBehaviour
         moveCam.enabled = false;
 
         gameOverCalled = false;
+        fallFinished = false;
 
         InstantiateChessPieces();
         isWhiteTurn = true;
@@ -105,7 +106,7 @@ public class BoardManager : MonoBehaviour
             GameOver();
             WonTextManager.Instance.setWonText();
         }
-		if (whiteWon != null && gameOverCalled) {
+		if (whiteWon != null && gameOverCalled &&!fallFinished) {
 			FigureFall ();
 		}
     }
@@ -284,7 +285,7 @@ public class BoardManager : MonoBehaviour
         }
         MoveHighlights.Instance.HideHighlights();
         selectedChesspiece.UnhighlightPiece();
-        select		edChesspiece = null;
+        selectedChesspiece = null;
     }
 
     private void ShowBalanceFields()
@@ -457,25 +458,24 @@ public class BoardManager : MonoBehaviour
 		{
 			if (c != null)
 			{
-				Rigidbody crb = c.GetComponent<Rigidbody> ();
-				if (crb.angularDrag <= 0.0f) {
-					fallFinished = true;
-					return;
-				}
-				crb.angularDrag-=1.5f;
-				crb.drag-=1.5f;
+                Rigidbody crb = c.GetComponent<Rigidbody>();
+                LeanTween.value(crb.angularDrag, 1.0f, 3.0f).setOnUpdate((float ang) => crb.angularDrag = ang);
+                LeanTween.value(crb.drag, 1.0f, 3.0f).setOnUpdate((float drag) => crb.drag = drag); ;
 				foreach (GameObject g in c.weights)
 				{
 					if (g != null)
 					{
 						Rigidbody wrb = g.GetComponent<Rigidbody>();
-						wrb.angularDrag-=1.5f;
-						wrb.drag-=1.5f;
-					}
+                        LeanTween.value(wrb.angularDrag, 1.0f, 3.0f).setOnUpdate((float ang) => wrb.angularDrag = ang); ;
+                        LeanTween.value(wrb.drag, 1.0f, 3.0f).setOnUpdate((float drag) => wrb.drag = drag);
+                    }
 				}
 			}
 		}
+        fallFinished = true;
 	}
+
+
 
     /*
 	private void TempMoveBalancePoint ()
