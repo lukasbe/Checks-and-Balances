@@ -55,6 +55,7 @@ public class BoardManager : MonoBehaviour
 
     public bool isWhiteTurn;
     private bool gameOverCalled;
+	private bool fallFinished;
 
     private void Awake()
     {
@@ -99,11 +100,14 @@ public class BoardManager : MonoBehaviour
             rb.isKinematic = false;
         }
         whiteWon = WhiteWon();
-        if (whiteWon != null)
+		if (whiteWon != null && !gameOverCalled)
         {
             GameOver();
             WonTextManager.Instance.setWonText();
         }
+		if (whiteWon != null && gameOverCalled) {
+			FigureFall ();
+		}
     }
 
     public void InstantiateChessPlanes()
@@ -414,8 +418,6 @@ public class BoardManager : MonoBehaviour
 
     private bool? WhiteWon()
     {
-        if (gameOverCalled)
-            return null;
         if (whiteTick.GetComponent<BoxCollider>().bounds.Intersects(whiteWonObj.GetComponent<BoxCollider>().bounds))
             return true;
         else if (blackTick.GetComponent<BoxCollider>().bounds.Intersects(blackWonObj.GetComponent<BoxCollider>().bounds))
@@ -439,8 +441,8 @@ public class BoardManager : MonoBehaviour
             {
                 c.transform.SetParent(null);
                 Rigidbody crb = c.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-                crb.angularDrag = 1.5f;
-                crb.drag = 1.5f;
+                crb.angularDrag = 19f;
+                crb.drag = 19f;
                 BoxCollider bc = c.gameObject.AddComponent(typeof(BoxCollider)) as BoxCollider;
                 foreach (GameObject g in c.weights)
                 {
@@ -448,14 +450,39 @@ public class BoardManager : MonoBehaviour
                     {
                         g.transform.SetParent(null);
                         Rigidbody wrb = g.AddComponent(typeof(Rigidbody)) as Rigidbody;
-                        wrb.angularDrag = 1.5f;
-                        wrb.drag = 1.5f;
+                        wrb.angularDrag = 19f;
+                        wrb.drag = 19f;
                         BoxCollider wbc = g.AddComponent(typeof(BoxCollider)) as BoxCollider;
                     }
                 }
             }
         }
     }
+
+	private void FigureFall(){
+		foreach (Chesspiece c in Chesspieces)
+		{
+			if (c != null)
+			{
+				Rigidbody crb = c.GetComponent<Rigidbody> ();
+				if (crb.angularDrag <= 0.0f) {
+					fallFinished = true;
+					return;
+				}
+				crb.angularDrag-=1.5f;
+				crb.drag-=1.5f;
+				foreach (GameObject g in c.weights)
+				{
+					if (g != null)
+					{
+						Rigidbody wrb = g.GetComponent<Rigidbody>();
+						wrb.angularDrag-=1.5f;
+						wrb.drag-=1.5f;
+					}
+				}
+			}
+		}
+	}
 
     /*
 	private void TempMoveBalancePoint ()
