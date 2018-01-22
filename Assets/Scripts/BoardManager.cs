@@ -251,47 +251,40 @@ public class BoardManager : MonoBehaviour
 
     private void MoveChesspiece(int x, int y)
     {
-        if (allowedMoves[x, y])
-        {
-            Chesspiece c = Chesspieces[x, y];
-            if (c != null && c.isWhite != isWhiteTurn)
-            {
-                selectedChesspiece.AddWeight(c.GetWeight());
-                c.weights.Clear();
-                Destroy(c.gameObject);
-            }
+		if (allowedMoves [x, y]) {
+			Chesspiece c = Chesspieces [x, y];
+			if (c != null && c.isWhite != isWhiteTurn) {
+				selectedChesspiece.AddWeight (c.GetWeight ());
+				c.weights.Clear ();
+				Destroy (c.gameObject);
+			}
 
-            Chesspieces[selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
-            selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter(x, y);
-            selectedChesspiece.SetPosition(x, y);
-            Chesspieces[x, y] = selectedChesspiece;
-            isWhiteTurn = !isWhiteTurn;
-            //if (selectedChesspiece.GetType() == typeof(Pawn)) {
-            //if (selectedChesspiece.isWhite && y == 0)
-            //	ChangePawnToQueen (selectedChesspiece, x, y, true);
-            //if (!selectedChesspiece.isWhite && y == 7)
-            //	ChangePawnToQueen (selectedChesspiece, x, y, false);
-            //}
-            balancePoint.CalculateBalancePoint(Chesspieces, TILE_OFFSET);
-            //rb.centerOfMass = balancePoint.transform.localPosition;
+			Chesspieces [selectedChesspiece.CurrentX, selectedChesspiece.CurrentY] = null;
+			selectedChesspiece.transform.position = selectedChesspiece.GetTileCenter (x, y);
+			selectedChesspiece.SetPosition (x, y);
+			Chesspieces [x, y] = selectedChesspiece;
+			isWhiteTurn = !isWhiteTurn;
+			//if (selectedChesspiece.GetType() == typeof(Pawn)) {
+			//if (selectedChesspiece.isWhite && y == 0)
+			//	ChangePawnToQueen (selectedChesspiece, x, y, true);
+			//if (!selectedChesspiece.isWhite && y == 7)
+			//	ChangePawnToQueen (selectedChesspiece, x, y, false);
+			//}
+			balancePoint.CalculateBalancePoint (Chesspieces, TILE_OFFSET);
+			//rb.centerOfMass = balancePoint.transform.localPosition;
 
-            if (numberOfMoves < fastCamSwitchThreshold)
-            {
-                MoveGameCam();
-            }
-            else
-            {
-                ShowActionCam();
-            }
-            //rb.centerOfMass = balancePoint.transform.localPosition;
-            StartCoroutine("MoveWatchHand");
-            //rb.centerOfMass = balancePoint.transform.localPosition;
-            Debug.Log("BalancePoint: " + balancePoint.z);
-            Debug.Log("Balance: " + rb.centerOfMass.z);
+			if (numberOfMoves < fastCamSwitchThreshold) {
+				MoveGameCam ();
+			} else {
+				ShowActionCam ();
+			}
+			//rb.centerOfMass = balancePoint.transform.localPosition;
+			StartCoroutine ("MoveWatchHand");
+			//rb.centerOfMass = balancePoint.transform.localPosition;
         }
         MoveHighlights.Instance.HideHighlights();
         selectedChesspiece.UnhighlightPiece();
-        selectedChesspiece = null;
+        select		edChesspiece = null;
     }
 
     private void ShowBalanceFields()
