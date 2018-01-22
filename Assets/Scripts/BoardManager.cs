@@ -54,6 +54,7 @@ public class BoardManager : MonoBehaviour
     public Camera moveCam;
 
     public bool isWhiteTurn;
+    public bool whiteCamPreview { get; set; }
     public bool gameOverCalled { get; set; }
 	private bool fallFinished;
 
@@ -78,6 +79,7 @@ public class BoardManager : MonoBehaviour
 
         InstantiateChessPieces();
         isWhiteTurn = true;
+        whiteCamPreview = true;
         whiteWon = null;
         balancePoint.initBalancePointPosition();
     }
@@ -334,6 +336,7 @@ public class BoardManager : MonoBehaviour
         }
 
         moveCam.GetComponent<MoveCamera>().resetPosition();
+        whiteCamPreview = !whiteCamPreview;
     }
 
     private void MoveGameCam()
