@@ -69,9 +69,10 @@ public class MoveCamera : MonoBehaviour
 
 	private void CameraMovement(Transform actionCamPos){
 		LeanTween.move (cam.gameObject, actionCamPos.position, 1.5f).setEaseInOutQuint();
-		LeanTween.rotate (cam.gameObject, actionCamPos.rotation.eulerAngles, 1.5f).setEaseInOutQuint ();
+        LeanTween.rotate(cam.gameObject, actionCamPos.rotation.eulerAngles, 1.5f).setEaseInOutQuint();
 	}
 
+ 
     public void resetPosition()
     {
         //canvas.transform.gameObject.SetActive(false);

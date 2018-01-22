@@ -336,7 +336,6 @@ public class BoardManager : MonoBehaviour
         }
 
         moveCam.GetComponent<MoveCamera>().resetPosition();
-        whiteCamPreview = !whiteCamPreview;
     }
 
     private void MoveGameCam()
@@ -375,8 +374,8 @@ public class BoardManager : MonoBehaviour
         {
             yield return new WaitForSeconds(2);
         }
-
         ShowGameCam();
+        whiteCamPreview = !whiteCamPreview;
     }
 
     private float Map(float oldMin, float oldMax, float newMin, float newMax, float value)
